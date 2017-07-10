@@ -16,9 +16,9 @@
 
   window.resources = window.resources || {};
   window.resources.sound = {
-        load: load,
-				play: play,
-      };
+		load: load,
+		play: play,
+  };
 })();
 
 (function() {
@@ -44,8 +44,8 @@
 
 	window.resources = window.resources || {};
   window.resources.music = {
-        load: load,
-				play: play,
-				volume: volume
-      };
+		load: load,
+		play: play,
+		volume: volume
+	};
 })();
