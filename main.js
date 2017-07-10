@@ -8,8 +8,8 @@ function onResize(){
 }
 
 window.onresize = onResize;
-resources.sound.load('sfx_exp_short_hard1.wav', 'pop');
-resources.music.load('1.mp3', 'pup');
+resources.sound.load('src/audio/sfx_exp_short_hard1.wav', 'pop');
+resources.music.load('src/audio/1.mp3', 'pup');
 resources.music.play('pup', 0);
 
 
