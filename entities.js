@@ -1,12 +1,13 @@
 // Entitiy class
 
-let Entity = function(pos, dir, speed, health, size, sprite) {
+let Entity = function(pos, speed, health, size, sprite) {
 	this.pos = pos;
-	this.dir = dir; // TODO point obj?
+	this.dir = new Point(0, 0);
 	this.speed = speed;
 	this.health = health;
 	this.size = size;
-	this.sprite = sprite; // TODO sprite class?
+	this.sprite = sprite;
+	console.log(this);
 }
 
 Entity.prototype.render = function(ctx){
@@ -18,13 +19,63 @@ Entity.prototype.render = function(ctx){
 }
 
 Entity.prototype.update = function(step){
-	this.pos.x += this.speed * 3 * step / 1000;
+	with (this){
+		pos.add(dir.scale(speed * step / 1000)); // FIXME change geometry lib
+		dir.normalize();
+	}
+}
+
+// Player control class
+
+let PlayerControl = function(plr){
+	this.plr = plr;
+	this.isAttack = false;
+	this.upv = this.downv = this.leftv = this.rightv = 0; // TODO NEED TO RENAME!
+};
+
+(function() {
+	let updateDir = function(cntrl){
+		cntrl.plr.dir.set(cntrl.leftv + cntrl.rightv, cntrl.upv + cntrl.downv);
+		cntrl.plr.dir.normalize();
+	};
+
+	PlayerControl.prototype.up = function(b){ // TODO make it shorter
+		this.upv = b ? -1 : 0;
+		updateDir(this);
+	};
+
+	PlayerControl.prototype.down = function(b){
+		this.downv = b ? 1 : 0;
+		updateDir(this);
+	};
+
+	PlayerControl.prototype.left = function(b){
+		this.leftv = b ? -1 : 0
+		updateDir(this);
+	};
+
+	PlayerControl.prototype.right = function(b){
+		this.rightv = b ? 1 : 0;
+		updateDir(this);
+	};
+})();
+
+PlayerControl.prototype.attack = function(b){
+	this.isAttack = b;
 }
 
 // Player class
 
 let Player = function(...args){
 	Entity.apply(this, args);
+	this.control = new PlayerControl(this);
 }
 
 Player.prototype = Object.create(Entity.prototype);
+
+Player.prototype.update = function(){
+	with (this){
+		pos.add(dir.scale(speed * step / 1000)); // FIXME change geometry lib
+		dir.normalize();
+	}
+}
