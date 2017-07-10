@@ -29,7 +29,7 @@
 
 	function isReady(name) {
 		if (name != undefined)
-			return content.hasOwnProperty(k) && content[k];
+			return content.hasOwnProperty(name) && content[name];
 		else {
 			for (let k in content)
 				if (content.hasOwnProperty(k) && !content[k])
