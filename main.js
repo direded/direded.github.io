@@ -19,4 +19,9 @@ function test_func(){
 	//window.addEventListener("keydown", plr1HandleInput.isKeyDown);
 	window.onkeydown = plr1HandleInput.isKeyDown;
 	window.onkeyup = plr1HandleInput.isKeyUp;
+	game.addEnt(new Enemy(new Point(100, 100), 100, 100, new Point(100, 100), new Sprite(new Point(100, 100), resources.img.get("p_ship_1"))));
+	game.getEnt(1).move(function(time){
+		time /= 1000;
+			return new Point(100 * Math.sin(time)  , 10*time);
+		});
 }
