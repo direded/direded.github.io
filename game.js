@@ -5,7 +5,7 @@ let Game = function(context) {
 		delta = 0,
 		now;
 
-	let addEntity = function(e){
+	let addEnt = function(e){
 		ents.push(e);
 	}
 
@@ -47,7 +47,7 @@ let Game = function(context) {
 
 	return {
 		getEnt: getEnt,
-		addEnt: addEntity,
+		addEnt: addEnt,
 		start: start,
 	}
 };
