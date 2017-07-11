@@ -68,6 +68,18 @@ Point.prototype = {
     return Math.sqrt(x * x + y * y);
   },
 
+  angle: function(x, y){
+    let dx = this.x - x;
+    let dy = this.y - y;
+    return Math.atan2(dy, dx);
+  },
+
+  direction: function(x, y){
+    let dx = x - this.x;
+    let dy = y - this.y;
+    return new Point(dx, dy).normalize();
+  },
+
   length: function (){
      return Math.sqrt(this.x * this.x + this.y*this.y);
   },
@@ -94,7 +106,7 @@ Point.prototype = {
     };
   }
 
-  for (let f of ["add", "subtract", "equals", "set", "distance"])
+  for (let f of ["add", "subtract", "equals", "set", "distance", "angle", "direction"])
     Point.prototype[f] = takePointOrArgs(Point.prototype[f]);
 })();
 
