@@ -2,17 +2,25 @@ var canvas = $("<canvas>")[0];
 $("body")[0].append(canvas);
 var context = canvas.getContext("2d");
 
-function onResize(){
+function onResize() {
 	canvas.width = document.body.clientWidth;
-    canvas.height = document.body.clientHeight;
+	canvas.height = document.body.clientHeight;
+}
+onResize();
+window.onresize = onResize;
+
+game = new Game(context);
+
+
+function test_func(){
+	game.addEnt(new Player(new Point(100, 100), 100, 100, new Point(100, 100), new Sprite(new Point(100, 100), resources.img.get("p_ship_1"))));
+	let plr1HandleInput = playerHandleInput(game.getEnt(0), {up: "w", down: "s", left: "a", right: "d", attack: "c"});
+	//window.addEventListener("keydown", plr1HandleInput.isKeyDown);
+	window.onkeydown = plr1HandleInput.isKeyDown;
+	window.onkeyup = plr1HandleInput.isKeyUp;
 }
 
-window.onresize = onResize;
-resources.sound.load('src/audio/sfx_exp_short_hard1.wav', 'pop');
-resources.music.load('src/audio/1.mp3', 'pup');
-resources.music.play('pup', 0);
-
-
-setInterval(function(){
-	 resources.music.volume('pup', +0.1)
-}, 500);
+resources.img.load("src/bullet.png", "bullet");
+resources.img.load("src/ply_model.png", "p_ship_1");
+resources.img.onReady(game.start);
+resources.img.onReady(test_func);

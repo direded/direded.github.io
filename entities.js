@@ -50,7 +50,7 @@ let PlayerControl = function(plr){
 	};
 
 	PlayerControl.prototype.left = function(b){
-		this.leftv = b ? -1 : 0
+		this.leftv = b ? -1 : 0;
 		updateDir(this);
 	};
 
@@ -63,7 +63,6 @@ let PlayerControl = function(plr){
 PlayerControl.prototype.attack = function(b){
 	this.isAttack = b;
 	this.plr.fire();
-	console.log(ents.length);
 }
 
 // Player class
@@ -76,12 +75,12 @@ let Player = function(...args){
 Player.prototype = Object.create(Entity.prototype);
 
 Player.prototype.fire = function(){
-	ents.push(new Bullet(new Point(0, -1), 2,
+	game.addEnt(new Bullet(new Point(0, -1), 2,
 		new Point(this.pos.x, this.pos.y), 250, 100, new Point(64, 32),
 		new Sprite(new Point(64, 32), resources.img.get("bullet"))));
 }
 
-Player.prototype.update = function(){
+Player.prototype.update = function(step){
 	with (this){
 		pos.add(dir.scale(speed * step / 1000)); // FIXME change geometry lib
 		dir.normalize();
