@@ -1,8 +1,11 @@
 resources.img.load("src/bullet.png", "bullet");
 resources.img.load("src/ply_model.png", "p_ship_1");
 resources.img.load("src/back.gif","background");
-
 resources.img.onReady(game.start);
+resources.img.onReady(function(){
+		resources.sprites.add(resources.img.get("p_ship_1"), "ship", undefined, new Point(60, 70));
+		resources.sprites.add(resources.img.get("bullet"), "bullet", undefined, new Point(32, 48));
+	});
 resources.img.onReady(test_func);
 
 resources.sound.load("src/audio/pew.wav", "pew_1");

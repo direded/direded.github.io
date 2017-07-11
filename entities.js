@@ -47,7 +47,7 @@ Ship.prototype = Object.create(Entity.prototype);
 Ship.prototype.fire = function(dir, side){
 	game.bullets.push(new Bullet(dir.clone(), 2, side,
 		this.pos.clone().add(dir.clone().scale(Math.min(this.sprite.size.x, this.sprite.size.y))), 250,  100, new Point(16, 32),
-		new Sprite(new Point(32, 48), resources.img.get("bullet"))));
+		resources.sprites.get("bullet")));
 }
 
 // Enemy class
@@ -141,7 +141,6 @@ Player.prototype.update = function(step) {
 
 Player.prototype.render = function(step) {
 	if (this.state == "died") return;
-	console.log(this.hitbox());
 	Entity.prototype.render.call(this, step);
 };
 
