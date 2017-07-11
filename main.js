@@ -19,4 +19,6 @@ function test_func(){
 	//window.addEventListener("keydown", plr1HandleInput.isKeyDown);
 	window.onkeydown = plr1HandleInput.isKeyDown;
 	window.onkeyup = plr1HandleInput.isKeyUp;
+
+	resources.music.play("shooting_stars", 0.5);
 }
