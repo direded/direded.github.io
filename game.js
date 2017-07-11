@@ -4,6 +4,7 @@ let Game = function(context) {
 		step = 20,
 		delta = 0,
 		now;
+	let bg = null;
 
 	let addEnt = function(e){
 		ents.push(e);
@@ -15,6 +16,7 @@ let Game = function(context) {
 	}
 
 	let start = function() {
+		bg = new Background(resources.img.get("background"));
 		requestAnimationFrame(loop);
 	};
 
@@ -22,11 +24,11 @@ let Game = function(context) {
 		ents.forEach(function(ent){
 			ent.update(step);
 		});
+		bg.update(step);
 	};
 
 	let render = function(ctx) {
-		ctx.fillStyle = "#fff";
-		ctx.fillRect(0, 0, canvas.width, canvas.height);
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
 
 		ents.forEach(function(ent){
 			ent.render(ctx);
@@ -49,5 +51,6 @@ let Game = function(context) {
 		getEnt: getEnt,
 		addEnt: addEnt,
 		start: start,
+		background: bg,
 	}
 };
