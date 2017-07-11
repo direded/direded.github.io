@@ -6,6 +6,7 @@ function onResize() {
 	canvas.width = document.body.clientWidth;
 	canvas.height = document.body.clientHeight;
 }
+
 onResize();
 window.onresize = onResize;
 
