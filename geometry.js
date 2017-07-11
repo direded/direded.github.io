@@ -56,6 +56,18 @@ Point.prototype = {
     return this;
   },
 
+  lerp: function lerp(f, time) {
+    let x = this.x + (f.x - this.x) * time;
+    let y = this.t + (f.y - this.y) * time;
+    return new Point(x, y);
+  }
+
+  distance: function distance(x, y) {
+    let x = this.x - x;
+    let y = this.y - y;
+    return Math.sqrt(x * x + y * y);
+  }
+
   length: function (){
      return Math.sqrt(this.x * this.x + this.y*this.y);
   },
@@ -82,7 +94,7 @@ Point.prototype = {
     };
   }
 
-  for (let f of ["add", "subtract", "equals", "set"])
+  for (let f of ["add", "subtract", "equals", "set", "distance"])
     Point.prototype[f] = takePointOrArgs(Point.prototype[f]);
 })();
 

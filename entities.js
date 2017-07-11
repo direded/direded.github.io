@@ -1,6 +1,6 @@
 // Entitiy class
 
-let Entity = function(pos, speed, health, size, sprite) {
+let Entity = function(pos, speed, health, size, sprite){
 	this.pos = pos;
 	this.dir = new Point(0, 0);
 	this.speed = speed;
@@ -21,6 +21,37 @@ Entity.prototype.update = function(step){
 	with (this){
 		pos.add(dir.clone().scale(speed * step / 1000)); // FIXME change geometry lib
 	}
+}
+
+// Ship class
+
+let Ship = function(...args){
+	Entity.apply(this, args);
+}
+
+Ship.prototype.fire = function(){
+	game.addEnt(new Bullet(new Point(0, -1), 2,
+		new Point(this.pos.x, this.pos.y), 250, 100, new Point(64, 32),
+		new Sprite(new Point(64, 32), resources.img.get("bullet"))));
+}
+
+
+// Enemy class
+
+let Enemy = function(...args){
+	Ship.apply(this, args);
+	this.moveStart = this.pos;
+	this.moveFunc = null;
+}
+
+Enemy.prototype = Object.create(Ship.prototype);
+
+Enemy.prototype.move = function(func){
+	this.moveFunc = func;
+} 
+
+Enemy.prototype.update = function(step){
+	this.pos.set(this.moveFunc().add(this.moveStart));
 }
 
 // Player control class
@@ -68,17 +99,11 @@ PlayerControl.prototype.attack = function(b){
 // Player class
 
 let Player = function(...args){
-	Entity.apply(this, args);
+	Ship.apply(this, args);
 	this.control = new PlayerControl(this);
 }
 
-Player.prototype = Object.create(Entity.prototype);
-
-Player.prototype.fire = function(){
-	game.addEnt(new Bullet(new Point(0, -1), 2,
-		new Point(this.pos.x, this.pos.y), 250, 100, new Point(64, 32),
-		new Sprite(new Point(64, 32), resources.img.get("bullet"))));
-}
+Player.prototype = Object.create(Ship.prototype);
 
 Player.prototype.update = function(step) {
 	with (this)
