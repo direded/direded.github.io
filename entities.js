@@ -101,6 +101,7 @@ let PlayerControl = function(plr){
 PlayerControl.prototype.attack = function(b){
 	this.isAttack = b;
 	this.plr.fire();
+	resources.sound.play("pew_1", 0.5);
 }
 
 // Player class

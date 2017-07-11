@@ -24,4 +24,5 @@ function test_func(){
 		time /= 1000;
 			return new Point(100 * Math.sin(time)  , 10*time);
 		});
+	resources.music.play("shooting_stars", 0.5);
 }
