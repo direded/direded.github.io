@@ -53,7 +53,7 @@ Enemy.prototype.move = function(func){
 	this.moveFunc = func;
 	this.moveTime = 0;
 	this.moveStart = this.pos.clone();
-} 
+}
 
 Enemy.prototype.update = function(step){
 	if (this.moveFunc) {

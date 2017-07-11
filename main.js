@@ -12,7 +12,6 @@ window.onresize = onResize;
 
 game = new Game(context);
 
-
 function test_func(){
 	game.addEnt(new Player(new Point(100, 100), 100, 100, new Point(100, 100), new Sprite(new Point(100, 100), resources.img.get("p_ship_1"))));
 	let plr1HandleInput = playerHandleInput(game.getEnt(0), {up: "w", down: "s", left: "a", right: "d", attack: "c"});
@@ -24,5 +23,5 @@ function test_func(){
 		time /= 1000;
 			return new Point(100 * Math.sin(time)  , 10*time);
 		});
-	resources.music.play("shooting_stars", 0.5);
+	resources.music.play("shooting_stars", 0.5, true);
 }

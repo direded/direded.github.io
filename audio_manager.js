@@ -5,7 +5,7 @@
 
 	function load(url, name) {
 		sounds[name] = url;
-  };
+	};
 
 	function play(name, vol) {
 		let audio = new Audio();
@@ -14,8 +14,8 @@
 		audio.play();
 	};
 
-  window.resources = window.resources || {};
-  window.resources.sound = {
+	window.resources = window.resources || {};
+	window.resources.sound = {
 		load: load,
 		play: play,
   };
@@ -32,20 +32,27 @@
 		musics[name] = audio;
 	};
 
-	function play(name, vol) {
+	function play(name, vol, loop) {
 		audio = musics[name];
 		audio.volume = vol;
+		audio.loop = loop;
 		audio.play();
-	}
+	};
+
+	function pause(name){
+		audio = musics[name];
+		audio.pause();
+	};
 
 	function volume(name, vol) {
 		musics[name].volume = vol;
-	}
+	};
 
 	window.resources = window.resources || {};
-  window.resources.music = {
+	window.resources.music = {
 		load: load,
 		play: play,
-		volume: volume
+		volume: volume,
+		pause: pause,
 	};
 })();
