@@ -29,6 +29,8 @@ let Ship = function(...args){
 	Entity.apply(this, args);
 }
 
+Ship.prototype = Object.create(Entity.prototype);
+
 Ship.prototype.fire = function(){
 	game.addEnt(new Bullet(new Point(0, -1), 2,
 		new Point(this.pos.x, this.pos.y), 250, 100, new Point(64, 32),
@@ -42,16 +44,22 @@ let Enemy = function(...args){
 	Ship.apply(this, args);
 	this.moveStart = this.pos;
 	this.moveFunc = null;
+	this.moveTime = 0;
 }
 
 Enemy.prototype = Object.create(Ship.prototype);
 
 Enemy.prototype.move = function(func){
 	this.moveFunc = func;
+	this.moveTime = 0;
+	this.moveStart = this.pos.clone();
 } 
 
 Enemy.prototype.update = function(step){
-	this.pos.set(this.moveFunc().add(this.moveStart));
+	if (this.moveFunc) {
+		this.moveTime += step;
+		this.pos.set(this.moveFunc(this.moveTime)).add(this.moveStart);
+	}
 }
 
 // Player control class

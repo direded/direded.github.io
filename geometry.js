@@ -60,13 +60,13 @@ Point.prototype = {
     let x = this.x + (f.x - this.x) * time;
     let y = this.t + (f.y - this.y) * time;
     return new Point(x, y);
-  }
+  },
 
   distance: function distance(x, y) {
-    let x = this.x - x;
-    let y = this.y - y;
+    x = this.x - x;
+    y = this.y - y;
     return Math.sqrt(x * x + y * y);
-  }
+  },
 
   length: function (){
      return Math.sqrt(this.x * this.x + this.y*this.y);
