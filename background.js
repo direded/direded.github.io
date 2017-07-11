@@ -1,14 +1,9 @@
-function BackgroundPlay(name) {
-
-}
-
 let Background = function(img) {
 	this.speed = 500;
 	this.offset = 0;
-	this.object = eval("document.body");
+	this.object = document.body;
 	this.src = img.src;
 	this.set(img);
-	console.log(this.object);
 }
 
 Background.prototype.set = function(img) {

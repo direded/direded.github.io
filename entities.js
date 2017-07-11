@@ -9,11 +9,12 @@ let Entity = function(pos, speed, health, size, sprite){
 	this.sprite = sprite;
 }
 
-Entity.prototype.visualBounds = function(){
+
+Entity.prototype.visualBounds = function() {
 	return new Rect(this.pos.x - this.sprite.origin.x, this.pos.y - this.sprite.origin.y, this.sprite.size.x, this.sprite.size.y);
 }
 
-Entity.prototype.hitbox = function(){
+Entity.prototype.hitbox = function() {
 	return new Rect(this.pos.x - this.size.x / 2, this.pos.y - this.size.y / 2, this.size.x, this.size.y);
 }
 
@@ -47,7 +48,7 @@ Ship.prototype = Object.create(Entity.prototype);
 Ship.prototype.fire = function(dir, side){
 	game.bullets.push(new Bullet(dir.clone(), 2, side,
 		this.pos.clone().add(dir.clone().scale(Math.min(this.sprite.size.x, this.sprite.size.y))), 250,  100, new Point(16, 32),
-		new Sprite(new Point(32, 48), resources.img.get("bullet"))));
+		resources.sprites.get("bullet")));
 }
 
 // Enemy class
@@ -111,6 +112,7 @@ Weapon.prototype.attack = function(step){
 		this.time = 0;
 	}
 }
+
 
 // Player control class
 
@@ -178,7 +180,6 @@ Player.prototype.update = function(step) {
 
 Player.prototype.render = function(step) {
 	if (this.state == "died") return;
-	console.log(this.hitbox());
 	Entity.prototype.render.call(this, step);
 };
 
@@ -253,5 +254,3 @@ let DefaultEnemy = function(enterPoint, movePoint, ...args){
 		}
 	};
 }
-
-

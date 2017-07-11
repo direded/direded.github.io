@@ -2,29 +2,39 @@
 
 	let sounds = {};
 	let audio = '';
+	let allVol = 0.5;
 
 	function load(url, name) {
 		sounds[name] = url;
-  };
+	};
 
 	function play(name, vol) {
 		let audio = new Audio();
 		audio.src = sounds[name];
-		audio.volume = vol;
+		audio.volume = vol * allVol;
 		audio.play();
 	};
 
-  window.resources = window.resources || {};
-  window.resources.sound = {
+	function overallVolume(vol) {
+		for (a in sounds){
+			sounds[a].volume = sounds[a].volume / allVol * vol;
+		}
+		allVol = vol;
+	}
+
+	window.resources = window.resources || {};
+	window.resources.sound = {
 		load: load,
 		play: play,
-  };
+		overallVolume: overallVolume,
+	};
 })();
 
 (function() {
 
 	let musics = {};
 	let audio = '';
+	let allVol = 0.5;
 
 	function load(url, name, vol) {
 		let audio = new Audio();
@@ -32,20 +42,35 @@
 		musics[name] = audio;
 	};
 
-	function play(name, vol) {
+	function play(name, vol, loop) {
 		audio = musics[name];
-		audio.volume = vol;
+		audio.volume = vol * allVol;
+		audio.loop = loop;
 		audio.play();
-	}
+	};
+
+	function pause(name){
+		audio = musics[name];
+		audio.pause();
+	};
 
 	function volume(name, vol) {
-		musics[name].volume = vol;
+		musics[name].volume = vol * allVol;
+	};
+
+	function overallVolume(vol){
+		for (a in musics){
+			musics[a].volume = musics[a].volume / allVol * vol;
+		}
+		allVol = vol;
 	}
 
 	window.resources = window.resources || {};
-  window.resources.music = {
+	window.resources.music = {
 		load: load,
 		play: play,
-		volume: volume
+		volume: volume,
+		pause: pause,
+		overallVolume: overallVolume,
 	};
 })();
