@@ -68,6 +68,18 @@ Point.prototype = {
     return Math.sqrt(x * x + y * y);
   }
 
+  length: function (){
+     return Math.sqrt(this.x * this.x + this.y*this.y);
+  },
+
+  normalize: function normalize(){
+	  let length = this.length();
+	  if (length == 0) return this;
+	  this.x = this.x / length;
+	  this.y = this.y / length;
+	  return this;
+  },
+
   isZero() {
     return this.x == 0 && this.y == 0;
   }

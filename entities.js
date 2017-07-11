@@ -19,8 +19,7 @@ Entity.prototype.render = function(ctx){
 
 Entity.prototype.update = function(step){
 	with (this){
-		pos.add(dir.scale(speed * step / 1000)); // FIXME change geometry lib
-		dir.normalize();
+		pos.add(dir.clone().scale(speed * step / 1000)); // FIXME change geometry lib
 	}
 }
 
@@ -105,11 +104,9 @@ let Player = function(...args){
 
 Player.prototype = Object.create(Ship.prototype);
 
-Player.prototype.update = function(step){
-	with (this){
-		pos.add(dir.scale(speed * step / 1000)); // FIXME change geometry lib
-		dir.normalize();
-	}
+Player.prototype.update = function(step) {
+	with (this)
+		pos.add(dir.clone().scale(speed * step / 1000)); // FIXME change geometry lib
 }
 
 // Bullet class
