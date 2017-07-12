@@ -120,7 +120,7 @@ PlayerControl.prototype.attack = function(b){
 let Player = function(obj){
 	Entity.call(this, obj);
 	this.control = new PlayerControl(this);
-	this.weapon = new DefaultWeapon(this);
+	this.weapon = new MachinegunWeapon(this);
 }
 
 Player.prototype = Object.create(Entity.prototype);
