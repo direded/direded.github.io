@@ -25,9 +25,14 @@ let Sprite = function(size, img, src_rect){
 }
 
 Sprite.prototype.render = function(ctx, pos){
-	with (this)
+	with (this){
+		let w = size.x * canvas.height / 1080;
+		let h = size.y * canvas.width / 1920;
+		let x = (pos.x - origin.x) * canvas.height / 1080;
+		let y = (pos.y - origin.y) * canvas.width / 1920;
 		if (src_rect)
-			ctx.drawImage(img, src_rect.left, src_rect.top, src_rect.width, src_rect.height, pos.x - origin.x, pos.y - origin.y, size.x, size.y);
+			ctx.drawImage(img, src_rect.left, src_rect.top, src_rect.width, src_rect.height, x, y, w, h);
 		else
-			ctx.drawImage(img, pos.x - origin.x, pos.y - origin.y, size.x, size.y);
+			ctx.drawImage(img, x, y, w, h);
+		}
 }

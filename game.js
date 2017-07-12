@@ -8,6 +8,8 @@ let Game = function(context) {
 		now,
 		bg = null;
 
+	let border = new Point(1920, 1080);
+
 	let addEnt = function(e){
 		if (e instanceof Player)
 			plrs.push(e);
@@ -21,7 +23,7 @@ let Game = function(context) {
 	}
 
 	let start = function() {
-		bg = new Background(resources.img.get("background"));
+		bg = new Background(resources.img.get("background"), canvas);
 		requestAnimationFrame(loop);
 	};
 
@@ -41,6 +43,7 @@ let Game = function(context) {
 		for (let b in bullets){
 		 	if (bullets[b].isAbroad()){
 				bullets.splice(b, 1);
+				console.log("oops");
 				continue;
 			}
 			for (let e in ents)
@@ -67,7 +70,6 @@ let Game = function(context) {
 
 	let render = function(ctx) {
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
-
 		ents.forEach(function(ent){
 			ent.render(ctx);
 		});
@@ -96,6 +98,7 @@ let Game = function(context) {
 		bullets: bullets,
 		players: plrs,
 		start: start,
+		border: border,
 		background: bg,
 	}
 };

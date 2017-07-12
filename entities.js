@@ -181,11 +181,11 @@ let Bullet = function(dir, damage, side, ...args){ // CHECK Will this works?
 Bullet.prototype = Object.create(Entity.prototype);
 
 Bullet.prototype.isAbroad = function(){
-	let w = canvas.width,
-	h = canvas.height;
+	let w = game.border.x,
+	h = game.border.y;
 	spr = this.sprite;
-	return (this.pos.x + spr.origin.x < 0 || this.pos.x - spr.origin.x > canvas.width ||
-		this.pos.y + spr.origin.y < 0 || this.pos.y - spr.origin.y > canvas.height);
+	return (this.pos.x + spr.origin.x < 0 || this.pos.x - spr.origin.x > w ||
+		this.pos.y + spr.origin.y < 0 || this.pos.y - spr.origin.y > h);
 };
 
 /*DefaultAI = function(enterPoint, movePoint, ...args){

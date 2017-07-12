@@ -1,13 +1,13 @@
-let Background = function(img) {
+let Background = function(img, obj) {
 	this.speed = 500;
 	this.offset = 0;
-	this.object = document.body;
+	this.object = obj;
 	this.src = img.src;
 	this.set(img);
 }
 
 Background.prototype.set = function(img) {
-	document.body.style.backgroundImage = "url('" + img.src + "')";
+	this.object.style.backgroundImage = "url('" + img.src + "')";
 }
 
 Background.prototype.update = function (step) {
