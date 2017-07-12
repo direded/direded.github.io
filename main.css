@@ -10,3 +10,47 @@ body {
 canvas {
 	position: absolute;
 }
+
+.menu {
+	display: block;
+	position: absolute;
+	border: 6px solid red;
+	visibility: visible;
+}
+
+.caption {
+	text-align: center;
+ 	font-weight: bold;
+ 	color: blue;
+
+}
+
+.start {
+    display: inline-block;
+    position: absolute;
+	background-color: darkgray; 
+    border: 2px solid #c3c3c3;
+    
+    font-weight: bold;
+	align-content: center;
+}
+
+.pause {
+    display: inline-block;
+    position: absolute;
+	background-color: darkcyan; 
+    border: 2px;
+
+    font-weight: bold;
+    align-content: center;
+}
+
+.restart {
+    display: inline-block;
+    position: absolute;
+	background-color: darkcyan; 
+    border: 2px solid #c3c3c3;
+    
+    font-weight: bold;
+	align-content: center;
+}

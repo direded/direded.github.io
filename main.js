@@ -2,6 +2,9 @@ var canvas = $("<canvas>")[0];
 $("body")[0].append(canvas);
 var context = canvas.getContext("2d");
 
+var menu = new Menu();
+
+
 function onResize() {
 	let w = document.body.clientWidth;
 	let h = document.body.clientHeight;
@@ -16,6 +19,7 @@ function onResize() {
 		canvas.style.left = 0;
 		canvas.style.top = (h - canvas.height) / 2;
 	}
+	menu.resize();
 }
 
 onResize();
@@ -35,4 +39,9 @@ function test_func(){
 			return new Point(100 * Math.sin(time)  , 10*time);
 		});*/
 	resources.music.play("shooting_stars", 0.5, true);
+
+	//startMenu.createMainMenu();
+
+	//startMenu.createPauseMenu();
+	menu.createFinishMenu("You lose<br>Score:<br>256");
 }
