@@ -4,7 +4,7 @@ let DefaultBullet = function(obj){ // dir, damage, side, pos
 			speed: 400,
 			health: 1,
 			size: new Point(16, 32),
-			sprite: resources.sprites.get("bullet", new Point(16, 32)),
+			sprite: resources.sprites.get("bullet"),
 		},{
 			dir: obj.dir,
 			damage: obj.damage,
