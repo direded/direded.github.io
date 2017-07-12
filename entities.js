@@ -144,8 +144,12 @@ Player.prototype.update = function(step) {
 	if (this.state == "died") return;
 	if (this.control.isAttack)
 		this.weapon.fire();
-	with (this)
+	with (this) {
 		pos.add(dir.clone().scale(speed * step / 1000)); // FIXME change geometry lib
+		if (pos.x + sprite.origin.x > game.border.x || pos.y + sprite.origin.y > game.border.y ||
+			pos.x - sprite.origin.x < 0 || pos.y - sprite.origin.y < 0)
+			pos.subtract(dir.clone().scale(speed * step / 1000));
+	}
 };
 
 Player.prototype.render = function(step) {
