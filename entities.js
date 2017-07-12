@@ -55,54 +55,23 @@ Ship.prototype.fire = function(dir, side){
 
 let Enemy = function(...args){
 	Ship.apply(this, args);
-
-	this.enemyAI = new EnemyAI();
-	this.enemyAI.enemy = this;
+	this.attackDelay = 0;
+	this.attackTime = 0;
+	this.moveTime = 0;
 }
 
 Enemy.prototype = Object.create(Ship.prototype);
 
 Enemy.prototype.update = function(step){
-	this.enemyAI.update(step);
-}
-
-// EnemyAI class
-
-let EnemyAI = function(enter, move){
-	this.enter = enter;
-	this.move = move;
-	this.time = 0;
-
-	this.posStart = this.player.pos.clone();
-	this.state = "enter";
-}
-
-EnemyAI.prototype.changeState = function(nextState){
-	this.time = 0;
-	this.state = nextState;
-	this.enemy.posStart = this.enemy.pos.clone();
-} 
-
-EnemyAI.prototype.update = function(step){
-	let k;
-	this.time += step;
-	if (this.state === "enter"){
-		if (this.enter(this.time) === null)
-			this.changeState("move");
-	}
-	else if (this.state === "move") {
-		if (this.move(this.time) === null)
-			this.changeState("exit");
-	}
 }
 
 // Weapons class
 
-let Weapon = function(bullet, delay, ship){
+let Weapon = function(bullet, delay, plr){
 	this.bullet = bullet;
 	this.delay = delay;
 	this.time = 0;
-	this.ship = ship;
+	this.plr = plr;
 }
 
 Weapon.prototype.attack = function(step){
@@ -218,39 +187,41 @@ Bullet.prototype.isAbroad = function(){
 		this.pos.y + spr.origin.y < 0 || this.pos.y - spr.origin.y > canvas.height);
 };
 
-let DefaultWeapon = function(bullet, delay, ship){
-	Weapon.apply(this, [bullet, delay, ship]);
+/*DefaultAI = function(enterPoint, movePoint, ...args){
+	EnemyAI.apply(this, args);
+	this.enterPoint = enterPoint.clone();
+	this.movePoint = movePoint.clone();
 }
-DefaultWeapon.prototype = Object.create(Weapon.prototype);
 
-DefaultWeapon.prototype.fire = function() {
-	game.bullets.push(new this.bullet(dir, 2, side,
-		ship.pos.clone().add(dir.scale(Math.min(ship.sprite.size.x, ship.sprite.size.y))), 250,  100, new Point(16, 32),
-		new Sprite(new Point(32, 48), resources.img.get("bullet"))));
-}  
+DefaultAI.prototype = Object.create(EnemyAI.prototype);
+
+DefaultAI.prototype.move = function(time){
+	this.pos = this.posStart.lerp(this.movePoint, (time * this.speed) / this.posStart.distance(this.movePoint));
+	if (this.pos.equals(this.movePoint)) {
+		this.movePoint = this.posStart;
+		this.posStart = this.movePoint;
+		this.ai.time = 0;
+	}
+	if (this.pos.equals(this.enterPoint)) {
+		this.movePoint = this.posStart;
+		this.posStart = this.enterPoint;
+		this.ai.time = 0;
+	}
+
+};
+
+DefaultAI.prototype.enter = function(time){
+	this.pos = this.posStart.lerp(this.enterPoint, (time * this.speed) / this.posStart.distance(this.enterPoint));
+	if (this.pos.equals(this.enterPoint)){
+		return null;
+	}
+	console.log(this);
+};
 
 let DefaultEnemy = function(enterPoint, movePoint, ...args){
 	Enemy.apply(this, args);
-	
-	Enemy.enemyAI.move = function(time) {
-		this.pos = this.posStart.lerp(movePoint, (time * this.speed) / this.posStart.distance(movePoint));
-		if (this.pos.equals(movePoint)) {
-			movePoint = this.posStart;
-			this.posStart = movePoint;
-			this.enemyAI.time = 0;
-		}
-		if (this.pos.equals(enterPoint)) {
-			movePoint = this.posStart;
-			this.posStart = enterPoint;
-			this.enemyAI.time = 0;
-		}
-
-	};
-	
-	Enemy.enemyAI.enter = function(time) {
-		this.pos = this.posStart.lerp(enterPoint, (time * this.speed) / this.posStart.distance(enterPoint));
-		if (this.pos.equals(enterPoint)){
-			return null;
-		}
-	};
+	this.ai = new DefaultAI(enterPoint, movePoint, this);
 }
+
+DefaultEnemy.prototype = Object.create(Enemy.prototype);
+*/
