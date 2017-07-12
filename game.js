@@ -7,9 +7,39 @@ let Game = function(context) {
 		delta = 0,
 		now,
 		bg = null,
-		isPause = false;
-
+		isPause = false,
+		score = 0;
 	let border = new Point(1920, 1080);
+	let curLevel = 0;
+	let levelLoaded = false;
+	let level = resources.levels[curLevel];
+
+	let addScore = function(value){
+		score += value;
+	}
+
+	let levelKilled = function(){
+		level.killed();
+	}
+
+	let levelFinished = function(){
+		console.log("Level " + level.name + " finished");
+		levelLoaded = false;;
+		if (++curLevel < resources.levels.length){
+			level = resources.levels[curLevel];
+		} else {
+			gameOver();
+		}
+	}
+
+	let levelStart = function(){
+		levelLoaded = true;
+	}
+
+	let gameOver = function() {
+		console.log("You finished game with score: " + score);
+	}
+
 
 	let getEnts = function(){
 		return ents;
@@ -32,6 +62,7 @@ let Game = function(context) {
 		isPause = true;
 	}
 
+
 	let resume = function(){
 		isPause = false;
 		last = performance.now();
@@ -39,9 +70,8 @@ let Game = function(context) {
 	}
 
 	let checkCollision = function() {
-		let a;
 		for (let p in plrs) {
-			if (plrs[p].state == "died") continue;
+			if (!plrs[p].isAlive) continue;
 			for (let e in ents)
 				if (plrs[p].checkCollision(ents[e]))
 					plrs[p].kill();
@@ -59,12 +89,14 @@ let Game = function(context) {
 			for (let e in ents)
 				if (a = ents[e].checkCollision(bullets[b])){
 					bullets[b].kill();
+					addScore(ents[e].value || 0);
 					ents[e].kill();
 				}
 		}
 	}
 
 	let update = function(step) {
+		if (levelLoaded) level.update(step);
 		ents.forEach(function(ent){
 			ent.update(step);
 		});
@@ -87,7 +119,6 @@ let Game = function(context) {
 			if (b.isAlive)
 				newArr.push(b);
 		ents = newArr.slice();
-
 	};
 
 	let render = function(ctx) {
@@ -117,6 +148,10 @@ let Game = function(context) {
 	};
 
 	return {
+		addScore: addScore,
+		levelStart: levelStart,
+		levelFinished: levelFinished,
+		levelKilled: levelKilled,
 		ents: getEnts,
 		pause: pause,
 		resume: resume,

@@ -70,6 +70,11 @@ DefaultEnemy.prototype.enter = function(){
 	}
 }
 
+DefaultEnemy.prototype.end = function(){
+	this.moveTo(new Point(game.border.x / 2, -400));
+	this.state = this.kill;
+}
+
 DefaultEnemy.prototype.mainMove = function(time){
 	with (this) {
 		curPoint += stateDir;

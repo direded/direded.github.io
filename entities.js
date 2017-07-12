@@ -49,6 +49,7 @@ Entity.prototype.kill = function(e){
 
 let Enemy = function(obj){
 	Entity.call(this, obj);
+	this.value = 10;
 	this.attackDelay = 0;
 	this.attackTime = 0;
 	this.moveTime = 0;

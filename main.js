@@ -32,16 +32,7 @@ function test_func(){
 			sprite: resources.sprites.get("ship")}
 		));
 	let plr1HandleInput = playerHandleInput(game.players()[0], {up: "w", down: "s", left: "a", right: "d", attack: "c"});
-	//window.addEventListener("keydown", plr1HandleInput.isKeyDown);
 	window.onkeydown = plr1HandleInput.isKeyDown;
 	window.onkeyup = plr1HandleInput.isKeyUp;
-	game.ents().push(new DefaultEnemy({
-			pos: new Point(0, 0),
-		},
-		[new Point(200, 150), new Point(800, 150), new Point(800, 600), new Point(200, 600)]));
-	/*game.ents[0].move(function(time){
-		time /= 1000;
-			return new Point(100 * Math.sin(time)  , 10*time);
-		});*/
 	resources.music.play("shooting_stars", 0.5, true);
 }
