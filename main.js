@@ -31,8 +31,14 @@ function test_func(){
 			size: new Point(40, 60),
 			sprite: resources.sprites.get("ship")}
 		));
-	let plr1HandleInput = playerHandleInput(game.players()[0], {up: "w", down: "s", left: "a", right: "d", attack: "c"});
-	window.onkeydown = plr1HandleInput.isKeyDown;
-	window.onkeyup = plr1HandleInput.isKeyUp;
+	let plr1HandleInput = playerHandleInput(game.players()[0], {up: "KeyW", down: "KeyS", left: "KeyA", right: "KeyD", attack: "KeyV"});
+	game.players().push(new Player({
+			pos: new Point(50 ,canvas.height - 60),
+			speed: 380,
+			health: 100,
+			size: new Point(40, 60),
+			sprite: resources.sprites.get("ship")}
+		));
+	let plr2HandleInput = playerHandleInput(game.players()[1], {up: "Numpad8", down: "Numpad5", left: "Numpad4", right: "Numpad6", attack: "ArrowDown"});
 	resources.music.play("shooting_stars", 0.5, true);
 }
