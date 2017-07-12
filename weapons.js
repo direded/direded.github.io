@@ -1,5 +1,5 @@
 let DefaultBullet = function(dir, damage, side, pos){
-	Bullet.call(this, dir, damage, side, pos, 400, 1, new Point(16, 32), resources.sprites.get("bullet", new Point(32, 48)))
+	Bullet.call(this, dir, damage, side, pos, 400, 1, new Point(16, 32), resources.sprites.get("bullet"))
 }
 
 DefaultBullet.prototype = Object.create(Bullet.prototype);
