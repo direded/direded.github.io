@@ -1,5 +1,5 @@
-let DefaultEnemy = function(points, ...args){
-	Enemy.apply(this, args);
+let DefaultEnemy = function(entObj, points){
+	Enemy.call(this, entObj);
 	this.attackDelay = 300;
 	this.finalPos = null;
 	this.startPos = null;
@@ -14,10 +14,12 @@ let DefaultEnemy = function(points, ...args){
 DefaultEnemy.prototype = Object.create(Enemy.prototype);
 
 DefaultEnemy.prototype.fire = function(){
-	game.bullets.push(new Bullet(new Point(0, 1), 2, "enemy",
-		this.pos.clone().add(new Point(0, this.sprite.origin.y)),
-		250,  100, new Point(16, 32),
-		resources.sprites.get("bullet")));
+	game.bullets.push(new DefaultBullet({
+			dir: new Point(0, 1),
+			damage: 2,
+			side: "enemy",
+			pos: this.pos.clone().add(new Point(0, this.sprite.origin.y)),
+		}));
 }
 
 DefaultEnemy.prototype.update = function(step){
@@ -63,7 +65,6 @@ DefaultEnemy.prototype.enter = function(){
 }
 
 DefaultEnemy.prototype.mainMove = function(time){
-	console.log("opa");
 	with (this) {
 		curPoint += stateDir;
 		if (stateDir == 1) {

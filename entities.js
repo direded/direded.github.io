@@ -1,12 +1,12 @@
 // Entitiy class
 
-let Entity = function(pos, speed, health, size, sprite){
-	this.pos = pos.clone();
+let Entity = function(obj){ // pos, speed, health, size, sprite
+	this.pos = obj.pos.clone();
 	this.dir = new Point(0, 0);
-	this.speed = speed;
-	this.health = health;
-	this.size = size.clone();
-	this.sprite = sprite;
+	this.speed = obj.speed;
+	this.health = obj.health;
+	this.size = obj.size.clone();
+	this.sprite = obj.sprite;
 }
 
 
@@ -42,41 +42,24 @@ Entity.prototype.kill = function(e){
 //	this = null;
 }
 
-// Ship class
-
-let Ship = function(...args){
-	Entity.apply(this, args);
-}
-
-Ship.prototype = Object.create(Entity.prototype);
-
-Ship.prototype.fire = function(dir, side){
-	/*game.bullets.push(new Bullet(dir.clone(), 2, side,
-		this.pos.clone().add(dir.clone().scale(Math.min(this.sprite.size.x, this.sprite.size.y))), 250,  100, new Point(16, 32),
-		resources.sprites.get("bullet")));*/
-}
-
 // Enemy class
 
-let Enemy = function(...args){
-	Ship.apply(this, args);
+let Enemy = function(obj){
+	Entity.call(this, obj);
 	this.attackDelay = 0;
 	this.attackTime = 0;
 	this.moveTime = 0;
 }
 
-Enemy.prototype = Object.create(Ship.prototype);
-
-Enemy.prototype.update = function(step){
-}
+Enemy.prototype = Object.create(Entity.prototype);
 
 // Weapons class
 
-let Weapon = function(bullet, delay, plr){
-	this.bullet = bullet;
-	this.delay = delay;
+let Weapon = function(obj){
+	this.bullet = obj.bullet;
+	this.delay = obj.delay;
 	this.lastFire = 0;
-	this.plr = plr;
+	this.plr = obj.plr;
 }
 
 Weapon.prototype.fire = function(){
@@ -131,14 +114,14 @@ PlayerControl.prototype.attack = function(b){
 
 // Player class
 
-let Player = function(...args){
-	Ship.apply(this, args);
+let Player = function(obj){
+	Entity.call(this, obj);
 	this.control = new PlayerControl(this);
 	this.state = "alive";
 	this.weapon = new DefaultWeapon(this);
 }
 
-Player.prototype = Object.create(Ship.prototype);
+Player.prototype = Object.create(Entity.prototype);
 
 Player.prototype.update = function(step) {
 	if (this.state == "died") return;
@@ -174,11 +157,11 @@ Player.prototype.kill = function(){
 
 // Bullet class
 
-let Bullet = function(dir, damage, side, ...args){ // CHECK Will this works?
-	Entity.apply(this, args);
-	this.dir = dir.clone();
-	this.damage = damage;
-	this.side = side; // "enemy" or "player"
+let Bullet = function(entObj, bulletObj){ // dir, damage, side
+	Entity.call(this, entObj);
+	this.dir = bulletObj.dir.clone();
+	this.damage = bulletObj.damage;
+	this.side = bulletObj.side; // "enemy" or "player"
 };
 
 
