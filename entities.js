@@ -29,8 +29,13 @@ Entity.prototype.update = function(step){
 }
 
 Entity.prototype.checkCollision = function(e){
+	let ans = false;
 	if (e instanceof Bullet && e.side == "player")
-		return e.hitbox().intersects(this.hitbox());
+		if (e.hitbox().intersects(this.hitbox())){
+			this.health -= e.damage;
+			ans = "b";
+		}
+	return (this.health <= 0) ? true : ans;
 }
 
 Entity.prototype.kill = function(e){
@@ -46,9 +51,9 @@ let Ship = function(...args){
 Ship.prototype = Object.create(Entity.prototype);
 
 Ship.prototype.fire = function(dir, side){
-	game.bullets.push(new Bullet(dir.clone(), 2, side,
+	/*game.bullets.push(new Bullet(dir.clone(), 2, side,
 		this.pos.clone().add(dir.clone().scale(Math.min(this.sprite.size.x, this.sprite.size.y))), 250,  100, new Point(16, 32),
-		resources.sprites.get("bullet")));
+		resources.sprites.get("bullet")));*/
 }
 
 // Enemy class
@@ -70,18 +75,17 @@ Enemy.prototype.update = function(step){
 let Weapon = function(bullet, delay, plr){
 	this.bullet = bullet;
 	this.delay = delay;
-	this.time = 0;
+	this.lastFire = 0;
 	this.plr = plr;
 }
 
-Weapon.prototype.attack = function(step){
-	this.time += step;
-	if (this.time >= this.delay) {
-		this.fire();
-		this.time = 0;
+Weapon.prototype.fire = function(){
+	let now = performance.now();
+	if (now - this.lastFire >= this.delay) {
+		this._fire();
+		this.lastFire = now;
 	}
 }
-
 
 // Player control class
 
@@ -123,8 +127,6 @@ let PlayerControl = function(plr){
 PlayerControl.prototype.attack = function(b){
 	if (this.plr.state == "died") return;
 	this.isAttack = b;
-	this.plr.fire();
-	resources.sound.play("pew_1", 0.5);
 }
 
 // Player class
@@ -133,16 +135,15 @@ let Player = function(...args){
 	Ship.apply(this, args);
 	this.control = new PlayerControl(this);
 	this.state = "alive";
+	this.weapon = new DefaultWeapon(this);
 }
 
 Player.prototype = Object.create(Ship.prototype);
 
-Player.prototype.fire = function(){
-	Ship.prototype.fire.call(this, new Point(0, -1), "player");
-}
-
 Player.prototype.update = function(step) {
 	if (this.state == "died") return;
+	if (this.control.isAttack)
+		this.weapon.fire();
 	with (this)
 		pos.add(dir.clone().scale(speed * step / 1000)); // FIXME change geometry lib
 };

@@ -26,6 +26,7 @@ let Game = function(context) {
 	};
 
 	let checkCollision = function() {
+		let a;
 		for (let p in plrs) {
 			if (plrs[p].state == "died") continue;
 			for (let e in ents)
@@ -43,9 +44,9 @@ let Game = function(context) {
 				continue;
 			}
 			for (let e in ents)
-				if (ents[e].checkCollision(bullets[b])){
+				if (a = ents[e].checkCollision(bullets[b])){
 					bullets.splice(b, 1);
-					ents.splice(e, 1);
+					if (a != "b") ents.splice(e, 1);
 				}
 		}
 	}
