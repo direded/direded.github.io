@@ -60,7 +60,7 @@ Point.prototype = {
 
   lerp: function lerp(f, time) {
     let x = this.x + (f.x - this.x) * time;
-    let y = this.t + (f.y - this.y) * time;
+    let y = this.y + (f.y - this.y) * time;
     return new Point(x, y);
   },
 
