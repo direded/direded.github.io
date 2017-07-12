@@ -1,10 +1,14 @@
-let DefaultEnemy = function(enterP, finalP, ...args){
+let DefaultEnemy = function(points, ...args){
 	Enemy.apply(this, args);
-	this.attackDelay = 1000;
-	this.changeState("enter");
-	this.enterP = enterP;
-	this.finalP = finalP;
-	this.delta = 1;
+	this.attackDelay = 300;
+	this.finalPos = null;
+	this.startPos = null;
+	this.points = points;
+	this.curPoint = 0;
+	this.state = this.enter;
+	this.stateDir = 1;
+	this.isMoving = false;
+	this.state();
 }
 
 DefaultEnemy.prototype = Object.create(Enemy.prototype);
@@ -16,12 +20,6 @@ DefaultEnemy.prototype.fire = function(){
 		resources.sprites.get("bullet")));
 }
 
-DefaultEnemy.prototype.changeState = function(state){
-	this.startPos = this.pos;
-	this.state = state;
-	this.moveTime = 0;
-}
-
 DefaultEnemy.prototype.update = function(step){
 	with (this){
 		attackTime += step;
@@ -30,32 +28,61 @@ DefaultEnemy.prototype.update = function(step){
 			fire();
 		}
 
-		moveTime = moveTime + step * delta;
-		if (state === "enter")
-			if (!enter(moveTime))
-				changeState("move");
-		if (state === "move")
-			if (!mainMove(moveTime))
-				changeState("exit");
-
+		moveTime += step;
+		if (isMoving && !moveToUpdate(moveTime))
+			state();
 	}
 }
 
-DefaultEnemy.prototype.enter = function(time){
-	let maxTime = (this.startPos.distance(this.enterP) / this.speed) * 1000;
-	this.pos = this.startPos.lerp(this.enterP, time / maxTime);
-	if (time >= maxTime)
-		return false;
-	return true;
+DefaultEnemy.prototype.moveTo = function(p){
+	with (this) {
+		isMoving = true;
+		startPos = this.pos.clone();
+		finalPos = p;
+		moveTime = 0;
+	}
+}
+
+DefaultEnemy.prototype.moveToUpdate = function(time){
+	with (this) {
+		let maxTime = (startPos.distance(finalPos) / speed) * 1000;
+		pos = startPos.lerp(finalPos, time / maxTime);
+		if (time >= maxTime) {
+			isMoving = false;
+			return false;
+		}
+		return true;
+	}
+}
+
+DefaultEnemy.prototype.enter = function(){
+	with (this) {
+		moveTo(points[curPoint]);
+		state = mainMove;
+	}
 }
 
 DefaultEnemy.prototype.mainMove = function(time){
-	let maxTime = (this.startPos.distance(this.finalP) / this.speed) * 1000;
-	this.pos = this.startPos.lerp(this.finalP, time / maxTime);
-	if (time > maxTime) {
-		this.finalP = this.startPos.clone();
-		this.startPos = this.pos.clone();
-		this.moveTime = 0;
+	console.log("opa");
+	with (this) {
+		curPoint += stateDir;
+		if (stateDir == 1) {
+			if (curPoint < points.length)
+				moveTo(points[curPoint]);
+			else {
+				stateDir = -1;
+				curPoint -= 2;
+				moveTo(points[curPoint]);
+			}
+		} else {
+			if (curPoint >= 0)
+				moveTo(points[curPoint]);
+			else {
+				stateDir = 1;
+				curPoint += 2;
+				moveTo(points[curPoint]);
+			}
+
+		}
 	}
-	return true;
 }
