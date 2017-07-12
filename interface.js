@@ -74,23 +74,23 @@ Menu.prototype.buttonResize = function(i){
 }
 
 Menu.prototype.createTextNode = function(text, pMarTop, pTFone){
-	this.text = document.createElement('div');
-	this.text.innerHTML = text;
-	this.text.setAttribute("class", "caption");	
+	this.caption = document.createElement('div');
+	this.caption.innerHTML = text;
+	this.caption.setAttribute("class", "caption");	
 	this.pMarTop = pMarTop;
 	this.pTFone = pTFone
-	this.block.appendChild(this.text);
+	this.block.appendChild(this.caption);
 }
 
 Menu.prototype.textResize = function() {
-	this.text.style.marginTop = this.blockHeight * this.pMarTop;
-	this.text.style.fontSize = this.blockHeight * this.pTFone;
-	this.startOffset += 2 * parseInt(this.text.style.marginTop);
+	this.caption.style.marginTop = this.blockHeight * this.pMarTop;
+	this.caption.style.fontSize = this.blockHeight * this.pTFone;
+	this.startOffset += 2 * parseInt(this.caption.style.marginTop);
 }
 
 Menu.prototype.resize = function() {
 	this.menuResize();
-	if (this.text != null) {
+	if (this.caption != null) {
 		this.textResize()
 	}
 	for (let i = 0; i < this.countBtn; i++) {
@@ -123,6 +123,9 @@ Menu.prototype.createFinishMenu = function(text){
 } 
 
 Menu.prototype.remove = function(){
+	if (this.caption != null) {
+		this.block.removeChild(this.caption);
+	}
 	for (let i = 0; i < this.counyBtn; i++){
 		this.block.removeChild(this.btns[i]);
 	}

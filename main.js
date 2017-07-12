@@ -53,4 +53,5 @@ function test_func(){
 
 	//startMenu.createPauseMenu();
 	menu.createFinishMenu("You lose<br>Score:<br>256");
+	menu.remove();
 }
