@@ -6,7 +6,8 @@ let Game = function(context) {
 		step = 20,
 		delta = 0,
 		now,
-		bg = null;
+		bg = null,
+		isPause = false;
 
 	let border = new Point(1920, 1080);
 
@@ -27,6 +28,16 @@ let Game = function(context) {
 		requestAnimationFrame(loop);
 	};
 
+	let pause = function(){
+		isPause = true;
+	}
+
+	let resume = function(){
+		isPause = false;
+		last = performance.now();
+		requestAnimationFrame(loop);
+	}
+
 	let checkCollision = function() {
 		let a;
 		for (let p in plrs) {
@@ -43,7 +54,6 @@ let Game = function(context) {
 		for (let b in bullets){
 		 	if (bullets[b].isAbroad()){
 				bullets.splice(b, 1);
-				console.log("oops");
 				continue;
 			}
 			for (let e in ents)
@@ -90,11 +100,14 @@ let Game = function(context) {
 		}
 		last = now;
 		render(context);
-		requestAnimationFrame(loop);
+		if (!isPause)
+			requestAnimationFrame(loop);
 	};
 
 	return {
 		ents: ents,
+		pause: pause,
+		resume: resume,
 		bullets: bullets,
 		players: plrs,
 		start: start,
