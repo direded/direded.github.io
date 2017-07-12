@@ -39,8 +39,8 @@ function test_func(){
 			pos: new Point(0, 0),
 			speed: 250,
 			health: 5,
-			size: new Point(40, 60),
-			sprite: resources.sprites.get("ship"),
+			size: new Point(90, 90),
+			sprite: resources.sprites.get("enemy_1"),
 		},
 		[new Point(200, 150), new Point(800, 150), new Point(800, 600), new Point(200, 600)]));
 	/*game.ents[0].move(function(time){
