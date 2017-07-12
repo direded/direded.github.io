@@ -1,31 +1,42 @@
 let Game = function(context) {
-	let ents = [];
-		bullets = [];
+	var ents = [],
+		bullets = [],
 		plrs = [];
 	let last = performance.now(),
 		step = 20,
 		delta = 0,
 		now,
-		bg = null;
+		bg = null,
+		isPause = false;
 
 	let border = new Point(1920, 1080);
 
-	let addEnt = function(e){
-		if (e instanceof Player)
-			plrs.push(e);
-		else if (e instanceof Bullet)
-			bullets.push(e);
-		else ents.push(e);
+	let getEnts = function(){
+		return ents;
 	}
 
-	let getEnt = function(id){
-		return ents[id];
+	let getBullets = function(){
+		return bullets;
+	}
+
+	let getPlayers = function(){
+		return plrs;
 	}
 
 	let start = function() {
 		bg = new Background(resources.img.get("background"), canvas);
 		requestAnimationFrame(loop);
 	};
+
+	let pause = function(){
+		isPause = true;
+	}
+
+	let resume = function(){
+		isPause = false;
+		last = performance.now();
+		requestAnimationFrame(loop);
+	}
 
 	let checkCollision = function() {
 		let a;
@@ -36,20 +47,19 @@ let Game = function(context) {
 					plrs[p].kill();
 			for (let b in bullets)
 				if (plrs[p].checkCollision(bullets[b])) {
-					bullets.splice(b, 1);
+					bullets[b].kill();
 					plrs[p].kill();
 				}
 		}
 		for (let b in bullets){
 		 	if (bullets[b].isAbroad()){
-				bullets.splice(b, 1);
-				console.log("oops");
+				bullets[b].kill();
 				continue;
 			}
 			for (let e in ents)
 				if (a = ents[e].checkCollision(bullets[b])){
-					bullets.splice(b, 1);
-					if (a != "b") ents.splice(e, 1);
+					bullets[b].kill();
+					ents[e].kill();
 				}
 		}
 	}
@@ -66,6 +76,18 @@ let Game = function(context) {
 		});
 		bg.update(step);
 		checkCollision();
+		let newArr = new Array();
+		for (let i of bullets)
+			if (i.isAlive)
+				newArr.push(i);
+		bullets = newArr.slice();
+
+		newArr = new Array();
+		for (let b of ents)
+			if (b.isAlive)
+				newArr.push(b);
+		ents = newArr.slice();
+
 	};
 
 	let render = function(ctx) {
@@ -90,13 +112,16 @@ let Game = function(context) {
 		}
 		last = now;
 		render(context);
-		requestAnimationFrame(loop);
+		if (!isPause)
+			requestAnimationFrame(loop);
 	};
 
 	return {
-		ents: ents,
-		bullets: bullets,
-		players: plrs,
+		ents: getEnts,
+		pause: pause,
+		resume: resume,
+		bullets: getBullets,
+		players: getPlayers,
 		start: start,
 		border: border,
 		background: bg,
