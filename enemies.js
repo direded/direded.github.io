@@ -1,5 +1,11 @@
-let DefaultEnemy = function(entObj, points){
-	Enemy.call(this, entObj);
+let DefaultEnemy = function(entObj, points){ // entObj: pos
+	Enemy.call(this,{
+			pos: entObj.pos,
+			speed: 240,
+			health: 3,
+			size: new Point(90, 90),
+			sprite: resources.sprites.get("enemy_1"),
+		});
 	this.attackDelay = 300;
 	this.finalPos = null;
 	this.startPos = null;
@@ -14,7 +20,7 @@ let DefaultEnemy = function(entObj, points){
 DefaultEnemy.prototype = Object.create(Enemy.prototype);
 
 DefaultEnemy.prototype.fire = function(){
-	game.bullets.push(new DefaultEnemyBullet({
+	game.bullets().push(new DefaultEnemyBullet({
 			dir: new Point(0, 1),
 			damage: 2,
 			side: "enemy",
