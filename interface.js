@@ -1,4 +1,4 @@
-var Menu  = function() {
+/*var Menu  = function() {
 	this.block = document.createElement('div');
 	this.blockWidth = 0;
 	this.blockHeight = 0;
@@ -21,9 +21,9 @@ var Menu  = function() {
 
 Menu.prototype.createMenu = function(pw, ph, pBtnw, pBtnh, pBFone){
 	this.block.setAttribute("class","menu");
-	this.pw = pw; 
-	this.ph = ph; 
-	this.pBtnh = pBtnh; 
+	this.pw = pw;
+	this.ph = ph;
+	this.pBtnh = pBtnh;
 	this.pBtnw = pBtnw;
 	this.pBFone = pBFone;
 	this.menuResize();
@@ -33,7 +33,7 @@ Menu.prototype.createMenu = function(pw, ph, pBtnw, pBtnh, pBFone){
 Menu.prototype.menuResize = function() {
 	this.block.style.width = canvas.getAttribute("width") * this.pw;
 	this.blockWidth = parseInt(this.block.style.width);
-	this.block.style.height =  this.blockWidth * this.ph;	
+	this.block.style.height =  this.blockWidth * this.ph;
 	this.blockHeight = parseInt(this.block.style.height);
 
 	this.block.style.top = parseInt(canvas.style.top) + canvas.getAttribute('height') * 0.5 - this.blockHeight * 0.5;
@@ -43,7 +43,7 @@ Menu.prototype.menuResize = function() {
 }
 
 Menu.prototype.createButton = function(name, text){
-	
+
 	this.btns.push(document.createElement('button'));
 	this.countBtn++;
 	this.btns[this.countBtn - 1].setAttribute("class", name);
@@ -52,7 +52,7 @@ Menu.prototype.createButton = function(name, text){
 
 	this.btns[this.countBtn - 1].innerHTML = text;
 
-	this.block.appendChild(this.btns[this.countBtn - 1]);	
+	this.block.appendChild(this.btns[this.countBtn - 1]);
 }
 
 Menu.prototype.buttonResize = function(i){
@@ -65,7 +65,7 @@ Menu.prototype.buttonResize = function(i){
 
 	this.btns[i].style.fontSize = this.sizeBtn.y * this.pBFone;
 
-	if (i === 0) { 
+	if (i === 0) {
 		this.btns[0].style.top = this.startOffset + this.btnOffset;
 	}
 	else {
@@ -76,7 +76,7 @@ Menu.prototype.buttonResize = function(i){
 Menu.prototype.createTextNode = function(text, pMarTop, pTFone){
 	this.caption = document.createElement('div');
 	this.caption.innerHTML = text;
-	this.caption.setAttribute("class", "caption");	
+	this.caption.setAttribute("class", "caption");
 	this.pMarTop = pMarTop;
 	this.pTFone = pTFone
 	this.block.appendChild(this.caption);
@@ -109,7 +109,7 @@ Menu.prototype.createMainMenu = function(){
 
 Menu.prototype.createPauseMenu = function(){
 	this.createMenu(0.33, 1.2, 0.6, 0.2, 0.3);
-	this.createTextNode("Pause", 0.05, 0.1);	
+	this.createTextNode("Pause", 0.05, 0.1);
 	this.createButton("pause", "RESUME");
 	this.createButton("pause", "RESTART");
 	this.resize();
@@ -120,7 +120,7 @@ Menu.prototype.createFinishMenu = function(text){
 	this.createTextNode(text, 0.07, 0.1);
 	this.createButton("restart", "RESTART");
 	this.resize();
-} 
+}
 
 Menu.prototype.remove = function(){
 	if (this.caption != null) {
@@ -130,4 +130,4 @@ Menu.prototype.remove = function(){
 		this.block.removeChild(this.btns[i]);
 	}
 	document.body.removeChild(this.block);
-}
+}*/

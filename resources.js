@@ -3,11 +3,12 @@ resources.img.load("src/img/default_bullet.png", "default_bullet");
 resources.img.load("src/img/shotgun_bullet.png", "shotgun_bullet");
 resources.img.load("src/img/machinegun_bullet.png", "machinegun_bullet");
 resources.img.load("src/img/ship2.png", "p_ship_1");
+resources.img.load("src/img/ship2.png", "p_ship_2");
 resources.img.load("src/img/back.gif","background");
 resources.img.load("src/img/ship3.png", "enemy");
-resources.img.onReady(game.start);
 resources.img.onReady(function(){
-		resources.sprites.add(resources.img.get("p_ship_1"), "ship", undefined, new Point(96, 96));
+		resources.sprites.add(resources.img.get("p_ship_1"), "plr_1", undefined, new Point(96, 96));
+		resources.sprites.add(resources.img.get("p_ship_2"), "plr_2", undefined, new Point(96, 96));
 		resources.sprites.add(resources.img.get("enemy"), "enemy_1", undefined, new Point(96, 96));
 		resources.sprites.add(resources.img.get("enemy_bullet"), "enemy_bullet", undefined, new Point(20, 20));
 		resources.sprites.add(resources.img.get("shotgun_bullet"), "shotgun_bullet", undefined, new Point(20, 20));
@@ -15,6 +16,7 @@ resources.img.onReady(function(){
 		resources.sprites.add(resources.img.get("machinegun_bullet"), "machinegun_bullet", undefined, new Point(20, 20));
 	});
 resources.img.onReady(test_func);
+resources.img.onReady(game.init);
 
 resources.sound.load("src/audio/pew.wav", "pew_1");
 resources.sound.load("src/audio/shotgun.wav", "shotgun");
