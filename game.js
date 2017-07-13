@@ -151,13 +151,12 @@ let Game = function(context) {
 				attack: "ArrowDown"
 			});
 		loaded = true;
-		let sprite = "plr_1";
 		plrs.push(new Player({
 				pos: new Point(game.border.x / 2, game.border.y - 60),
 				speed: 380,
 				health: 3,
 				size: new Point(40, 60),
-				sprite: resources.sprites.get(sprite)}
+				sprite: resources.sprites.get("plr_1")}
 			));
 		input1.connectPlayer(plrs[plrs.length - 1]);
 		plrs.push(new Player({
@@ -165,7 +164,7 @@ let Game = function(context) {
 				speed: 380,
 				health: 3,
 				size: new Point(40, 60),
-				sprite: resources.sprites.get(sprite)}
+				sprite: resources.sprites.get("plr_2")}
 			));
 		input2.connectPlayer(plrs[plrs.length - 1]);
 		plrs[0].kill();
