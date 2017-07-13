@@ -155,7 +155,7 @@ let Game = function(context) {
 		plrs.push(new Player({
 				pos: new Point(game.border.x / 2, game.border.y - 60),
 				speed: 380,
-				health: 100,
+				health: 3,
 				size: new Point(40, 60),
 				sprite: resources.sprites.get(sprite)}
 			));
@@ -163,7 +163,7 @@ let Game = function(context) {
 		plrs.push(new Player({
 				pos: new Point(game.border.x / 2, game.border.y - 60),
 				speed: 380,
-				health: 100,
+				health: 3,
 				size: new Point(40, 60),
 				sprite: resources.sprites.get(sprite)}
 			));

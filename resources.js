@@ -18,7 +18,6 @@ resources.img.onReady(function(){
 		resources.sprites.add(resources.img.get("machinegun_bullet"), "machinegun_bullet", undefined, new Point(20, 20));
 		resources.sprites.add(resources.img.get("heart"), "heart", undefined, new Point(40, 35));
 	});
-resources.img.onReady(game.start);
 resources.img.onReady(test_func);
 resources.img.onReady(game.init);
 

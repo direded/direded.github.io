@@ -2,7 +2,6 @@ var canvas = $("<canvas>")[0];
 $("body")[0].append(canvas);
 var context = canvas.getContext("2d");
 
-<<<<<<< HEAD
 (function(){
 	let scaleCanvas = function(){
 		let w = document.body.clientWidth;
