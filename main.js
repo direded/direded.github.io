@@ -19,7 +19,6 @@ function onResize() {
 		canvas.style.left = 0;
 		canvas.style.top = (h - canvas.height) / 2;
 	}
-	menu.resize();
 }
 
 onResize();
@@ -52,6 +51,10 @@ function test_func(){
 	//startMenu.createMainMenu();
 
 	//startMenu.createPauseMenu();
-	menu.createFinishMenu("You lose<br>Score:<br>256");
-	menu.remove();
+	//menu.createFinishMenu("You lose<br>Score:<br>256");
+	//menu.remove();
+	menu.createMainMenu();
+	menu.createPauseMenu();
+	menu.createDeathMenu();
+	menu.createWinMenu();
 }

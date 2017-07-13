@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css?family=Press+Start+2P');
 * {
 	overflow: hidden;
 	margin: 0;
@@ -11,11 +12,78 @@ canvas {
 	position: absolute;
 }
 
-.menu {
+.menuMain {
+	cursor: default;
 	display: block;
 	position: absolute;
-	border: 6px solid red;
 	visibility: visible;
+	background-color: black;
+	display: none;
+}
+
+.menuPause {
+	cursor: default;
+	display: none;
+	position: absolute;
+	visibility: visible;
+	background: rgba(0, 0, 0, 0.8);
+}
+
+.menuDeath {
+	cursor: default;
+	display: none;
+	position: absolute;
+	visibility: visible;
+	background: black;
+}
+
+.menuWin {
+	cursor: default;
+	display: none;
+	position: absolute;
+	visibility: visible;
+	background: black;
+}
+
+.button {
+	cursor: pointer;
+	text-align: center;
+	font-family: 'Press Start 2P';
+	display: block;
+	position: absolute;
+	color: white;
+	user-select: none;
+}
+
+.button:hover {
+	color: gray;
+}
+
+.content {
+	display: block;
+	position: absolute;
+}
+
+.title {
+	cursor: default;
+	text-align: center;
+	position: absolute;
+	font-family: 'Press Start 2P';
+	font-weight: bold;
+	color: white;
+	display: block;
+	user-select: none;
+}
+
+.score {
+	cursor: default;
+	text-align: center;
+	position: absolute;
+	font-family: 'Press Start 2P';
+	font-weight: bold;
+	color: white;
+	display: block;
+	user-select: none;
 }
 
 .caption {
@@ -28,9 +96,9 @@ canvas {
 .start {
     display: inline-block;
     position: absolute;
-	background-color: darkgray; 
+	background-color: darkgray;
     border: 2px solid #c3c3c3;
-    
+
     font-weight: bold;
 	align-content: center;
 }
@@ -38,7 +106,7 @@ canvas {
 .pause {
     display: inline-block;
     position: absolute;
-	background-color: darkcyan; 
+	background-color: darkcyan;
     border: 2px;
 
     font-weight: bold;
@@ -48,9 +116,9 @@ canvas {
 .restart {
     display: inline-block;
     position: absolute;
-	background-color: darkcyan; 
+	background-color: darkcyan;
     border: 2px solid #c3c3c3;
-    
+
     font-weight: bold;
 	align-content: center;
 }

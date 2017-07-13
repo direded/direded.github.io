@@ -5,6 +5,7 @@ resources.img.load("src/img/machinegun_bullet.png", "machinegun_bullet");
 resources.img.load("src/img/ship2.png", "p_ship_1");
 resources.img.load("src/img/back.gif","background");
 resources.img.load("src/img/ship3.png", "enemy");
+resources.img.load("src/img/menu.png", "menu_back");
 resources.img.onReady(game.start);
 resources.img.onReady(function(){
 		resources.sprites.add(resources.img.get("p_ship_1"), "ship", undefined, new Point(96, 96));
