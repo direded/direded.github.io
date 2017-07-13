@@ -1,4 +1,4 @@
-let Game = function(context) { 
+let Game = function(context) {
 	var ents = [],
 		bullets = [],
 		plrs = [];
@@ -277,3 +277,6 @@ let Game = function(context) {
 		background: bg,
 	}
 };
+
+
+game = new Game(context);
