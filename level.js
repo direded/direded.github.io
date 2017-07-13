@@ -51,14 +51,17 @@ Stage.prototype.update = function(step){
 Stage.prototype.killed = function(){
 	this.enemyKilled++;
 	if (this.enemyKilled == this.enemyMax){
-		this.enemies = []
-		this.enemyCount = 0;
-		this.enemyKilled = 0;
-		this.time = 0;
+		this.cleanUp();
 		return true;
 	}
 }
 
+Stage.prototype.cleanUp = function(){
+	this.enemies = [];
+	this.enemyCount = 0;
+	this.enemyKilled = 0;
+	this.time = 0;
+}
 
 let DynLevel = function(name){
 	this.stages = [];
@@ -68,7 +71,7 @@ let DynLevel = function(name){
 	this.pauseDuration = -2;
 }
 
-DynLevel.prototype.stagePauseDuration = 3000;
+DynLevel.prototype.stagePauseDurat;ion = 3000;
 DynLevel.prototype.startPauseDuration = 4000;
 
 DynLevel.prototype.addStage = function(enemyMax, delay, startPos, genPoints){
@@ -126,9 +129,31 @@ DynLevel.prototype.killed = function(){
 		this.stageCleared();
 };
 
+DynLevel.prototype.cleanUp = function(){
+	this.pauseDuration = -2;
+	this.stages.forEach(function(s){
+			s.cleanUp();
+		});
+};
+
 (function(){
 	window.resources.levels = [];
 	let l = new DynLevel("Demo");
+	l.addStage(1, 1000,
+			function(id){
+				return new Point(Math.random() * (game.border.x + 100 + 100 + 1) - 100, -100);
+			},
+			function(id){
+				let count = Math.floor(Math.random() * (6 - 2 + 1)) + 2;
+				let ans = [];
+				let pointY = 0.5 * game.border.y * (id+1) / this.enemyMax;
+				ans.push(new Point(0, pointY));
+				for (let i = 0; i < count; i++)
+					ans.push(new Point(Math.random() * (game.border.x + 1), pointY));
+				ans.push(new Point(game.border.x, pointY));
+				return ans;
+			}
+		);
 	l.addStage(7, 1000,
 			function(id){
 				return new Point(Math.random() * (game.border.x + 100 + 100 + 1) - 100, -100);

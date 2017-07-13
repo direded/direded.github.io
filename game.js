@@ -15,6 +15,10 @@ let Game = function(context) {
 	let level = resources.levels[curLevel];
 	let loaded = false;
 
+	let playersCount = 1;
+
+	let menu = new Menu();
+
 	let input1, input2;
 	let hud = null;
 
@@ -36,10 +40,7 @@ let Game = function(context) {
 		if (++curLevel < resources.levels.length){
 			level = resources.levels[curLevel];
 		} else {
-			if ((plrs[0] && plrs[0].isAlive) || (plrs[0] && plrs[1].isAlive))
-				changeState("finished");
-			else
-				changeState("over");
+			setState("finished");
 		}
 	}
 
@@ -54,11 +55,15 @@ let Game = function(context) {
 		bullets.forEach(function(e){e.kill()});
 		levelLoaded = false;
 		curLevel = 0;
+		score = 0;
+		level.cleanUp();
 	}
 
 	let startState = function(){
 		resources.music.play("shooting_stars", 0.5, true);
 		spawnPlayer(0);
+		if (playersCount == 2)
+			spawnPlayer(1);
 		levelStart();
 		isPause = false;
 		last = performance.now();
@@ -66,6 +71,8 @@ let Game = function(context) {
 	};
 
 	let overState = function(){
+		menu.updateScore(score);
+		menu.displayDeathMenu(true);
 		console.log("Showing game over menu");
 		console.log("You lost game with score: " + score);
 		cleanUpGame();
@@ -73,6 +80,8 @@ let Game = function(context) {
 	};
 
 	let finishedState = function(){
+		menu.updateScore(score);
+		menu.displayWinMenu(true);
 		console.log("Showing finish menu");
 		console.log("You finished game with score: " + score);
 		cleanUpGame();
@@ -87,11 +96,19 @@ let Game = function(context) {
 	};
 
 	let pauseState = function(){
+		menu.displayPauseMenu(true);
 		console.log("Showing pause menu");
 		isPause = true;
 	};
 
-	let changeState = function(newState){
+	let menuState = function(){
+		menu.displayMainMenu(true);
+		console.log("Showing menu");
+		isPause = true;
+	};
+
+	let setState = function(newState){
+		menu.hideAll();
 		switch (newState) {
 			case "menu":
 				state = menuState;
@@ -150,6 +167,10 @@ let Game = function(context) {
 				right: "Numpad6",
 				attack: "ArrowDown"
 			});
+		window.addEventListener("keydown", function(e){
+			if (e.code == "KeyP")
+				setState("pause");
+		}, false);
 		loaded = true;
 		plrs.push(new Player({
 				pos: new Point(game.border.x / 2, game.border.y - 60),
@@ -170,7 +191,7 @@ let Game = function(context) {
 		plrs[0].kill();
 		plrs[1].kill();
 		hud = new HUD();
-		requestAnimationFrame(loop);
+		setState("menu");
 	};
 
 	let pause = function(){
@@ -181,6 +202,10 @@ let Game = function(context) {
 		isPause = false;
 		last = performance.now();
 		requestAnimationFrame(loop);
+	}
+
+	let checkPlayersAlive = function(){
+		return plrs[0].isAlive || plrs[1].isAlive;
 	}
 
 	let checkCollision = function() {
@@ -233,6 +258,8 @@ let Game = function(context) {
 			if (b.isAlive)
 				newArr.push(b);
 		ents = newArr.slice();
+		if (!isPause && !(plrs[0].isAlive || plrs[1].isAlive))
+			setState("over");
 	};
 
 	let render = function(ctx) {
@@ -272,9 +299,11 @@ let Game = function(context) {
 		ents: getEnts,
 		bullets: getBullets,
 		players: getPlayers,
-		changeState: changeState,
+		setState: setState,
 		border: border,
 		background: bg,
+		setPlayersCount: function(v){playersCount = v},
+		getPlayersCount: function(){return playersCount},
 	}
 };
 

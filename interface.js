@@ -1,4 +1,14 @@
 let Menu = function() {
+	this.createMainMenu();
+	this.createPauseMenu();
+	this.createDeathMenu();
+	this.createWinMenu();
+
+	let temp = this;
+	window.addEventListener("resize", function(){
+			temp.resize();
+		}, false);
+	this.resize();
 }
 //Main menu
 Menu.prototype.createMainMenu = function(){
@@ -8,6 +18,16 @@ Menu.prototype.createMainMenu = function(){
 	let player1 = document.createElement('div');
 	let player2 = document.createElement('div');
 	let settings = document.createElement('div');
+
+	player1.onclick = function(){
+			game.setPlayersCount(1);
+			game.setState("start");
+		};
+
+	player2.onclick = function(){
+			game.setPlayersCount(2);
+			game.setState("start");
+		};
 
 	menuMain.setAttribute("class", "menuMain");
 	content.setAttribute("class", "content");
@@ -28,11 +48,6 @@ Menu.prototype.createMainMenu = function(){
 	content.appendChild(settings);
 	content.appendChild(menuTitle);
 
-	let temp = this;
-	window.addEventListener("resize", function(){
-			temp.resize();
-		}, false);
-	this.resize();
 }
 
 Menu.prototype.displayMainMenu = function(show) {
@@ -54,17 +69,15 @@ Menu.prototype.createPauseMenu = function() {
 	content.setAttribute("class", "content");
 	resume.setAttribute("class", "button");
 
+	resume.onclick = function(){
+		game.setState("resume");
+	};
+
 	document.body.appendChild(menuPause);
 	menuPause.appendChild(content);
 	content.appendChild(resume);
 
 	resume.textContent = "RESUME";
-
-	let temp = this;
-	window.addEventListener("resize", function(){
-			temp.resize();
-		}, false);
-	this.resize();
 }
 
 Menu.prototype.displayPauseMenu = function(show) {
@@ -92,6 +105,13 @@ Menu.prototype.createDeathMenu = function() {
 	restart.setAttribute("class", "button");
 	menu.setAttribute("class", "button");
 
+	restart.onclick = function(){
+		game.setState("start");
+	}
+
+	menu.onclick = function(){
+		game.setState("menu");
+	}
 
 	document.body.appendChild(menuDeath);
 	menuDeath.appendChild(content);
@@ -104,11 +124,6 @@ Menu.prototype.createDeathMenu = function() {
 	restart.textContent = "RESTART";
 	menu.textContent = "MENU";
 
-	let temp = this;
-	window.addEventListener("resize", function(){
-			temp.resize();
-		}, false);
-	this.resize();
 }
 
 Menu.prototype.displayDeathMenu = function(show) {
@@ -136,6 +151,14 @@ Menu.prototype.createWinMenu = function() {
 	restart.setAttribute("class", "button");
 	menu.setAttribute("class", "button");
 
+	restart.onclick = function(){
+		game.setState("start");
+	}
+
+	menu.onclick = function(){
+		game.setState("menu");
+	}
+
 
 	document.body.appendChild(menuWin);
 	menuWin.appendChild(content);
@@ -146,12 +169,6 @@ Menu.prototype.createWinMenu = function() {
 
 	title.textContent = "YOU WIN!";
 	menu.textContent = "MENU";
-
-	let temp = this;
-	window.addEventListener("resize", function(){
-			temp.resize();
-		}, false);
-	this.resize();
 }
 
 Menu.prototype.displayWinMenu = function(show) {
@@ -226,6 +243,13 @@ Menu.prototype.resize = function() {
 	}
 }
 
+Menu.prototype.hideAll = function(){
+	this.displayWinMenu(false);
+	this.displayMainMenu(false);
+	this.displayDeathMenu(false);
+	this.displayPauseMenu(false);
+}
+
 let HUD = function(){
 	this.sprite = resources.sprites.get("heart");
  }
@@ -239,16 +263,12 @@ HUD.prototype.renderText = function(){
 }
 
 HUD.prototype.renderPlr1 = function(){
-	if (game.players()[0] === undefined)
-		return;
 	for (let i = 1; i <= game.players()[0].health; i++) {
 		this.sprite.render(context, new Point(i * 50 + this.sprite.origin.x, 25 + this.sprite.origin.y));
 	}
 }
 
 HUD.prototype.renderPlr2 = function(){
-	if (game.players()[1] === undefined)
-		return;
 	for (let i = 1; i <= game.players()[1].health; i++){
 		this.sprite.render(context, new Point(game.border.x - i * 50 - this.sprite.origin.x, 25 + this.sprite.origin.y));
 	}
@@ -256,6 +276,7 @@ HUD.prototype.renderPlr2 = function(){
 
 HUD.prototype.render = function(){
 	this.renderPlr1();
-	this.renderPlr2();
+	if (game.getPlayersCount == 2)
+		this.renderPlr2();
 	this.renderText();
 }
