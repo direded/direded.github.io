@@ -1,4 +1,4 @@
-let Game = function(context) {
+let Game = function(context) { 
 	var ents = [],
 		bullets = [],
 		plrs = [];
@@ -13,9 +13,14 @@ let Game = function(context) {
 	let curLevel = 0;
 	let levelLoaded = false;
 	let level = resources.levels[curLevel];
+	let hud = null;
 
 	let addScore = function(value){
 		score += value;
+	}
+
+	let getScore = function(){
+		return score;
 	}
 
 	let levelKilled = function(){
@@ -55,6 +60,7 @@ let Game = function(context) {
 
 	let start = function() {
 		bg = new Background(resources.img.get("background"), canvas);
+		hud = new HUD();
 		requestAnimationFrame(loop);
 	};
 
@@ -132,6 +138,7 @@ let Game = function(context) {
 		bullets.forEach(function(ent){
 			ent.render(ctx);
 		});
+		hud.render();
 	};
 
 	let loop = function() {
@@ -149,6 +156,7 @@ let Game = function(context) {
 
 	return {
 		addScore: addScore,
+		getScore: getScore,
 		levelStart: levelStart,
 		levelFinished: levelFinished,
 		levelKilled: levelKilled,

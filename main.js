@@ -2,8 +2,6 @@ var canvas = $("<canvas>")[0];
 $("body")[0].append(canvas);
 var context = canvas.getContext("2d");
 
-var menu = new Menu();
-
 
 function onResize() {
 	let w = document.body.clientWidth;
@@ -19,7 +17,6 @@ function onResize() {
 		canvas.style.left = 0;
 		canvas.style.top = (h - canvas.height) / 2;
 	}
-	menu.resize();
 }
 
 onResize();
@@ -31,7 +28,7 @@ function test_func(){
 	game.players().push(new Player({
 			pos: new Point(50 ,canvas.height - 60),
 			speed: 380,
-			health: 100,
+			health: 3,
 			size: new Point(40, 60),
 			sprite: resources.sprites.get("ship")}
 		));
@@ -39,16 +36,10 @@ function test_func(){
 	game.players().push(new Player({
 			pos: new Point(50 ,canvas.height - 60),
 			speed: 380,
-			health: 100,
+			health: 3,
 			size: new Point(40, 60),
 			sprite: resources.sprites.get("ship")}
 		));
 	let plr2HandleInput = playerHandleInput(game.players()[1], {up: "Numpad8", down: "Numpad5", left: "Numpad4", right: "Numpad6", attack: "ArrowDown"});
 	resources.music.play("shooting_stars", 0.5, true);
-
-	//startMenu.createMainMenu();
-
-	//startMenu.createPauseMenu();
-	menu.createFinishMenu("You lose<br>Score:<br>256");
-	menu.remove();
 }
