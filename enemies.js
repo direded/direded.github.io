@@ -2,7 +2,7 @@ let DefaultEnemy = function(entObj, points){ // entObj: pos
 	Enemy.call(this,{
 			pos: entObj.pos,
 			speed: 240,
-			health: 3,
+			health: 210,
 			size: new Point(90, 90),
 			sprite: resources.sprites.get("enemy_1"),
 		});

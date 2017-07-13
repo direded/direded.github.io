@@ -45,6 +45,10 @@ Entity.prototype.kill = function(e){
 		f(e);
 }
 
+Entity.prototype.killByPlr = function(e){
+	this.isAlive = false;
+	game.levelKilled();
+}
 // Enemy class
 
 let Enemy = function(obj){
@@ -121,7 +125,7 @@ PlayerControl.prototype.attack = function(b){
 let Player = function(obj){
 	Entity.call(this, obj);
 	this.control = new PlayerControl(this);
-	this.weapon = new ShotgunWeapon(this);
+	this.weapon = new MachinegunWeapon(this);
 }
 
 Player.prototype = Object.create(Entity.prototype);
@@ -150,6 +154,17 @@ Player.prototype.checkCollision = function(e){
 	else
 		return this.hitbox().intersects(e.hitbox());
 };
+
+Player.prototype.hit = function(){
+	if (--this.health > 0) return;
+	this.kill();
+}
+
+Player.prototype.kill = function(){
+	Entity.prototype.kill.call(this);
+	if (!game.players()[0].isAlive && !game.players()[1].isAlive)
+		game.setState("over");
+}
 
 // Bullet class
 

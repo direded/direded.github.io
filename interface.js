@@ -276,7 +276,7 @@ HUD.prototype.renderPlr2 = function(){
 
 HUD.prototype.render = function(){
 	this.renderPlr1();
-	if (game.getPlayersCount == 2)
+	if (game.getPlayersCount() == 2)
 		this.renderPlr2();
 	this.renderText();
 }

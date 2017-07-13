@@ -108,7 +108,7 @@ let Game = function(context) {
 	};
 
 	let setState = function(newState){
-		menu.hideAll();
+		let temp = state;
 		switch (newState) {
 			case "menu":
 				state = menuState;
@@ -120,7 +120,10 @@ let Game = function(context) {
 				state = resumeState;
 			break;
 			case "pause":
-				state = pauseState;
+				if (state == startState || state == resumeState)
+					state = pauseState;
+				else if (state == pauseState)
+					state = resumeState;
 			break;
 			case "finished":
 				state = finishedState;
@@ -130,12 +133,15 @@ let Game = function(context) {
 			break;
 
 		}
-		state();
-		state = null;
+		if (state != temp){
+			menu.hideAll();
+			state();
+		}
 	}
 
 	let spawnPlayer = function(id){
 		plrs[id].isAlive = true;
+		plrs[id].health = 3;
 		plrs[id].pos = new Point(game.border.x / 2, game.border.y - 60);
 	}
 
@@ -213,11 +219,11 @@ let Game = function(context) {
 			if (!plrs[p].isAlive) continue;
 			for (let e in ents)
 				if (plrs[p].checkCollision(ents[e]))
-					plrs[p].kill();
+					plrs[p].hit();
 			for (let b in bullets)
 				if (plrs[p].checkCollision(bullets[b])) {
 					bullets[b].kill();
-					plrs[p].kill();
+					plrs[p].hit();
 				}
 		}
 		for (let b in bullets){
@@ -228,8 +234,11 @@ let Game = function(context) {
 			for (let e in ents)
 				if (a = ents[e].checkCollision(bullets[b])){
 					bullets[b].kill();
-					addScore(ents[e].value || 0);
-					ents[e].kill();
+					ents[e].health -= bullets[b].damage;
+					if (ents[e].health <= 0){
+						addScore(ents[e].value || 0);
+						ents[e].killByPlr();
+					}
 				}
 		}
 	}
@@ -258,8 +267,6 @@ let Game = function(context) {
 			if (b.isAlive)
 				newArr.push(b);
 		ents = newArr.slice();
-		if (!isPause && !(plrs[0].isAlive || plrs[1].isAlive))
-			setState("over");
 	};
 
 	let render = function(ctx) {
@@ -293,6 +300,7 @@ let Game = function(context) {
 		init: initGame,
 		addScore: addScore,
 		getScore: getScore,
+		level: function(){return level;},
 		levelStart: levelStart,
 		levelFinished: levelFinished,
 		levelKilled: levelKilled,

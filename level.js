@@ -22,14 +22,12 @@ Stage.prototype.spawnEnt = function(){
 			{pos: this.getPosPoint(this.enemies.length)},
 			this.generatePoint(this.enemies.length),
 		));
-	this.enemies[this.enemies.length - 1].dieCallbacks.push(function(){
-		game.levelKilled();
-	});
 	game.ents().push(this.enemies[this.enemies.length - 1]);
 }
 
 Stage.prototype.end = function(){
-	time = -1;
+	this.time = -2;
+	this.endTime = 0;
 	for (let e of this.enemies)
 		e.end();
 }
@@ -37,6 +35,14 @@ Stage.prototype.end = function(){
 Stage.prototype.update = function(step){
 	with (this){
 		if (time == -1) return;
+		if (time == -2){
+			endTime += step;
+			if (endTime > 3000){
+				this.time == -1;
+				game.level().stageCleared();
+			}
+			return;
+		}
 		time += step;
 		if (enemyCount < enemyMax)
 			if (time >= delay){
@@ -54,6 +60,7 @@ Stage.prototype.killed = function(){
 		this.cleanUp();
 		return true;
 	}
+	return false;
 }
 
 Stage.prototype.cleanUp = function(){
@@ -131,6 +138,7 @@ DynLevel.prototype.killed = function(){
 
 DynLevel.prototype.cleanUp = function(){
 	this.pauseDuration = -2;
+	this.stageId = 0;
 	this.stages.forEach(function(s){
 			s.cleanUp();
 		});
