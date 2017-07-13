@@ -20,7 +20,7 @@ let DefaultEnemy = function(entObj, points){ // entObj: pos
 DefaultEnemy.prototype = Object.create(Enemy.prototype);
 
 DefaultEnemy.prototype.fire = function(){
-	game.bullets().push(new DefaultBullet({
+	game.bullets().push(new DefaultEnemyBullet({
 			dir: new Point(0, 1),
 			damage: 2,
 			side: "enemy",
