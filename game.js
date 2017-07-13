@@ -1,4 +1,4 @@
-let Game = function(context) {
+let Game = function(context) { 
 	var ents = [],
 		bullets = [],
 		plrs = [];
@@ -16,9 +16,14 @@ let Game = function(context) {
 	let loaded = false;
 
 	let input1, input2;
+	let hud = null;
 
 	let addScore = function(value){
 		score += value;
+	}
+
+	let getScore = function(){
+		return score;
 	}
 
 	let levelKilled = function(){
@@ -165,6 +170,12 @@ let Game = function(context) {
 		input2.connectPlayer(plrs[plrs.length - 1]);
 		plrs[0].kill();
 		plrs[1].kill();
+		hud = new HUD();
+		requestAnimationFrame(loop);
+	};
+
+	let pause = function(){
+		isPause = true;
 	}
 
 	let resume = function(){
@@ -236,6 +247,7 @@ let Game = function(context) {
 		bullets.forEach(function(ent){
 			ent.render(ctx);
 		});
+		hud.render();
 	};
 
 	let loop = function() {
@@ -254,6 +266,7 @@ let Game = function(context) {
 	return {
 		init: initGame,
 		addScore: addScore,
+		getScore: getScore,
 		levelStart: levelStart,
 		levelFinished: levelFinished,
 		levelKilled: levelKilled,
