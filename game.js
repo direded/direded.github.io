@@ -7,13 +7,16 @@ let Game = function(context) {
 		delta = 0,
 		now,
 		bg = null,
-		isPause = false,
+		isPause = true,
 		score = 0;
 	let border = new Point(1920, 1080);
 	let curLevel = 0;
 	let levelLoaded = false;
 	let level = resources.levels[curLevel];
 	let hud = null;
+	let loaded = false;
+
+	let input1, input2;
 
 	let addScore = function(value){
 		score += value;
@@ -29,22 +32,95 @@ let Game = function(context) {
 
 	let levelFinished = function(){
 		console.log("Level " + level.name + " finished");
-		levelLoaded = false;;
+		levelLoaded = false;
 		if (++curLevel < resources.levels.length){
 			level = resources.levels[curLevel];
 		} else {
-			gameOver();
+			if ((plrs[0] && plrs[0].isAlive) || (plrs[0] && plrs[1].isAlive))
+				changeState("finished");
+			else
+				changeState("over");
 		}
 	}
 
+	let state = null;
+
 	let levelStart = function(){
 		levelLoaded = true;
+	};
+
+	let cleanUpGame = function(){
+		ents.forEach(function(e){e.kill()});
+		bullets.forEach(function(e){e.kill()});
+		levelLoaded = false;
+		curLevel = 0;
 	}
 
-	let gameOver = function() {
+	let startState = function(){
+		resources.music.play("shooting_stars", 0.5, true);
+		spawnPlayer(0);
+		levelStart();
+		isPause = false;
+		last = performance.now();
+		requestAnimationFrame(loop);
+	};
+
+	let overState = function(){
+		console.log("Showing game over menu");
+		console.log("You lost game with score: " + score);
+		cleanUpGame();
+		isPause = true;
+	};
+
+	let finishedState = function(){
+		console.log("Showing finish menu");
 		console.log("You finished game with score: " + score);
+		cleanUpGame();
+		isPause = true;
+	};
+
+	let resumeState = function(){
+		console.log("Hiding pause menu");
+		isPause = false;
+		last = performance.now();
+		requestAnimationFrame(loop);
+	};
+
+	let pauseState = function(){
+		console.log("Showing pause menu");
+		isPause = true;
+	};
+
+	let changeState = function(newState){
+		switch (newState) {
+			case "menu":
+				state = menuState;
+			break;
+			case "start":
+				state = startState;
+			break;
+			case "resume":
+				state = resumeState;
+			break;
+			case "pause":
+				state = pauseState;
+			break;
+			case "finished":
+				state = finishedState;
+			break;
+			case "over":
+				state = overState;
+			break;
+
+		}
+		state();
+		state = null;
 	}
 
+	let spawnPlayer = function(id){
+		plrs[id].isAlive = true;
+		plrs[id].pos = new Point(game.border.x / 2, game.border.y - 60);
+	}
 
 	let getEnts = function(){
 		return ents;
@@ -58,7 +134,7 @@ let Game = function(context) {
 		return plrs;
 	}
 
-	let start = function() {
+	let initGame = function(){
 		bg = new Background(resources.img.get("background"), canvas);
 		hud = new HUD();
 		requestAnimationFrame(loop);
@@ -66,8 +142,41 @@ let Game = function(context) {
 
 	let pause = function(){
 		isPause = true;
+		input1 = playerHandleInput({
+				up: "KeyW",
+				down: "KeyS",
+				left: "KeyA",
+				right: "KeyD",
+				attack: "KeyV"
+			});
+		input2 = playerHandleInput({
+				up: "Numpad8",
+				down: "Numpad5",
+				left: "Numpad4",
+				right: "Numpad6",
+				attack: "ArrowDown"
+			});
+		loaded = true;
+		let sprite = "plr_1";
+		plrs.push(new Player({
+				pos: new Point(game.border.x / 2, game.border.y - 60),
+				speed: 380,
+				health: 100,
+				size: new Point(40, 60),
+				sprite: resources.sprites.get(sprite)}
+			));
+		input1.connectPlayer(plrs[plrs.length - 1]);
+		plrs.push(new Player({
+				pos: new Point(game.border.x / 2, game.border.y - 60),
+				speed: 380,
+				health: 100,
+				size: new Point(40, 60),
+				sprite: resources.sprites.get(sprite)}
+			));
+		input2.connectPlayer(plrs[plrs.length - 1]);
+		plrs[0].kill();
+		plrs[1].kill();
 	}
-
 
 	let resume = function(){
 		isPause = false;
@@ -155,18 +264,20 @@ let Game = function(context) {
 	};
 
 	return {
+		init: initGame,
 		addScore: addScore,
 		getScore: getScore,
 		levelStart: levelStart,
 		levelFinished: levelFinished,
 		levelKilled: levelKilled,
 		ents: getEnts,
-		pause: pause,
-		resume: resume,
 		bullets: getBullets,
 		players: getPlayers,
-		start: start,
+		changeState: changeState,
 		border: border,
 		background: bg,
 	}
 };
+
+
+game = new Game(context);
