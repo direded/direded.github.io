@@ -49,6 +49,7 @@ Entity.prototype.kill = function(e){
 
 let Enemy = function(obj){
 	Entity.call(this, obj);
+	this.value = 10;
 	this.attackDelay = 0;
 	this.attackTime = 0;
 	this.moveTime = 0;
@@ -120,7 +121,7 @@ PlayerControl.prototype.attack = function(b){
 let Player = function(obj){
 	Entity.call(this, obj);
 	this.control = new PlayerControl(this);
-	this.weapon = new MachinegunWeapon(this);
+	this.weapon = new ShotgunWeapon(this);
 }
 
 Player.prototype = Object.create(Entity.prototype);

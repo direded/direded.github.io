@@ -1,6 +1,7 @@
-let playerHandleInput = function(plr, keySet) {
+let playerHandleInput = function(keySet) {
 	let isKeyDown = function(e) {
-		switch (e.key.toLowerCase()) {
+		if (!plr) return;
+		switch (e.code) {
 			case keySet.up:
 				plr.control.up(true);
 				break;
@@ -20,7 +21,8 @@ let playerHandleInput = function(plr, keySet) {
 	}
 
 	let isKeyUp = function(e) {
-		switch (e.key.toLowerCase()) {
+		if (!plr) return;
+		switch (e.code) {
 			case keySet.up:
 				plr.control.up(false);
 				break;
@@ -39,8 +41,17 @@ let playerHandleInput = function(plr, keySet) {
 		}
 	}
 
+	let plr = null;
+
+	window.addEventListener("keydown", isKeyDown, false);
+	window.addEventListener("keyup", isKeyUp, false);
+
 	return {
-		isKeyDown: isKeyDown,
-		isKeyUp: isKeyUp,
-	};
+		connectPlayer: function(_plr){
+			plr = _plr;
+		},
+		disconnectPlayer: function(){
+			plr = null;
+		}
+	}
 }
