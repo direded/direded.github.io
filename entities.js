@@ -46,6 +46,14 @@ Entity.prototype.kill = function(e){
 }
 
 Entity.prototype.killByPlr = function(e){
+	let x = Math.random();
+	if (x > 0.8) {
+		let i = Math.random() * (3.5 - 1) + 1;
+		i = Math.round(i);
+		if (i == 1)game.bonus().push(new DefaultBonus(this.pos));
+		if (i == 2)game.bonus().push(new ShotgunBonus(this.pos));
+		if (i == 3)game.bonus().push(new MachinegunBonus(this.pos));
+	}
 	this.isAlive = false;
 	game.levelKilled();
 }
@@ -125,7 +133,7 @@ PlayerControl.prototype.attack = function(b){
 let Player = function(obj){
 	Entity.call(this, obj);
 	this.control = new PlayerControl(this);
-	this.weapon = new MachinegunWeapon(this);
+	this.weapon = new DefaultWeapon(this);
 }
 
 Player.prototype = Object.create(Entity.prototype);
@@ -185,3 +193,69 @@ Bullet.prototype.isAbroad = function(){
 	return (this.pos.x + spr.origin.x < 0 || this.pos.x - spr.origin.x > w ||
 		this.pos.y + spr.origin.y < 0 || this.pos.y - spr.origin.y > h);
 };
+
+// Binus class pos, speed, health, size, sprite
+let Bonus = function(bonusObj) {
+	Entity.call(this, {
+			pos: bonusObj.pos,
+			speed: 50,
+			health: 1,
+			size: new Point(32, 32),
+			sprite: bonusObj.sprite,
+		});
+	this.dir = new Point(0, 1);
+}
+
+Bonus.prototype = Object.create(Entity.prototype);
+
+Bonus.prototype.checkCollision = function(e){
+	return this.hitbox().intersects(e.hitbox());
+}
+
+// DefaultBonus
+let DefaultBonus = function(pos) {
+	Bonus.call(this, {
+			pos: pos,
+			sprite: resources.sprites.get("default_bonus"),
+		});
+}
+
+DefaultBonus.prototype = Object.create(Bonus.prototype);
+
+DefaultBonus.prototype.use = function(plr) {
+	if (!this.isAlive) return;
+	plr.weapon = new DefaultWeapon(plr);
+	this.kill();
+}
+
+//ShotgunBonus
+let ShotgunBonus = function(pos) {
+	Bonus.call(this, {
+			pos: pos,
+			sprite: resources.sprites.get("shotgun_bonus"),
+		});
+}
+
+ShotgunBonus.prototype = Object.create(Bonus.prototype);
+
+ShotgunBonus.prototype.use = function(plr) {
+	if (!this.isAlive) return;
+	plr.weapon = new ShotgunWeapon(plr);
+	this.kill();
+}
+
+//MachinegunBonus
+let MachinegunBonus = function (pos) {
+	Bonus.call(this, {
+		pos: pos,
+		sprite: resources.sprites.get("machinegun_bonus"),
+	})
+}
+
+MachinegunBonus.prototype = Object.create(Bonus.prototype);
+
+MachinegunBonus.prototype.use = function(plr) {
+	if (!this.isAlive) return;
+	plr.weapon = new MachinegunWeapon(plr);
+	this.kill();
+}
