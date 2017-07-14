@@ -1,6 +1,8 @@
+
 // Entitiy class
 
 let Entity = function(obj){ // pos, speed, health, size, sprite
+
 	this.pos = obj.pos.clone();
 	this.dir = new Point(0, 0);
 	this.speed = obj.speed;
@@ -156,7 +158,14 @@ Player.prototype.checkCollision = function(e){
 };
 
 Player.prototype.hit = function(){
+	resources.anim.play(
+		"explosion_1",
+		this.pos.clone().add(new Point(
+			Math.random() * this.size.x * 0.3,
+			Math.random() * this.size.y * 0.3)),
+		this.sprite.size.clone().scale(Math.random() * (0.55 - 0.35) + 0.35), 810);
 	if (--this.health > 0) return;
+
 	this.kill();
 }
 
