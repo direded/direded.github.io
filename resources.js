@@ -14,8 +14,8 @@ resources.img.load("src/img/shotgun_bonus.png", "shotgun_bonus");
 resources.img.load("src/img/machinegun_bonus.png", "machinegun_bonus");
 
 resources.img.onReady(function(){
-		resources.sprites.add(resources.img.get("p_ship_1"), "plr_1", undefined, new Point(96, 96));
-		resources.sprites.add(resources.img.get("p_ship_2"), "plr_2", undefined, new Point(96, 96));
+		resources.sprites.add(resources.img.get("p_ship_1"), "plr_1", undefined, new Point(72, 96));
+		resources.sprites.add(resources.img.get("p_ship_2"), "plr_2", undefined, new Point(72, 96));
 		resources.sprites.add(resources.img.get("enemy"), "enemy_1", undefined, new Point(96, 96));
 		resources.sprites.add(resources.img.get("enemy_bullet"), "enemy_bullet", undefined, new Point(20, 20));
 		resources.sprites.add(resources.img.get("shotgun_bullet"), "shotgun_bullet", undefined, new Point(20, 20));

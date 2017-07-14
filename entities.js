@@ -152,11 +152,6 @@ Player.prototype.update = function(step) {
 	}
 };
 
-Player.prototype.render = function(step) {
-	if (!this.isAlive) return;
-	Entity.prototype.render.call(this, step);
-};
-
 Player.prototype.checkCollision = function(e){
 	if (!e.isAlive || !this.isAlive) return false;
 	if (e instanceof Bullet)
