@@ -59,6 +59,7 @@ let Game = function(context) {
 		levelLoaded = false;
 		curLevel = 0;
 		score = 0;
+		resources.anim.cleanUp();
 		level.cleanUp();
 	}
 
@@ -310,6 +311,7 @@ let Game = function(context) {
 
 		bonus.forEach(function(ent){
 			ent.render(ctx);
+		});
 		resources.anim.render(ctx);
 		hud.render();
 	};

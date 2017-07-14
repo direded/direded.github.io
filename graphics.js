@@ -88,7 +88,6 @@ Animation.prototype.render = function(ctx){
 			src_rect.width,
 			src_rect.height, x, y, w, h);*/
 		ctx.drawImage(img, currentY * src_rect.height, currentX * src_rect.width, src_rect.width, src_rect.height, x, y, w, h);
-		console.log(currentX * src_rect.width, currentY * src_rect.height);
 
 	}
 };
@@ -142,10 +141,15 @@ Animation.prototype.update = function(step){
 			})
 	};
 
+	let cleanUp = function(ctx){
+		playing = [];
+	}
+
 	window.resources.anim = {
 		 	add: add,
 			play: play,
 			update: update,
 			render: render,
+			cleanUp: cleanUp,
 		};
 })();

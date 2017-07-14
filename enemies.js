@@ -6,7 +6,7 @@ let DefaultEnemy = function(entObj, points){ // entObj: pos
 			size: new Point(90, 90),
 			sprite: resources.sprites.get("enemy_1"),
 		});
-	this.attackDelay = 300;
+	this.attackDelay = 600;
 	this.finalPos = null;
 	this.startPos = null;
 	this.points = points;
@@ -106,8 +106,8 @@ let SniperEnemy = function(entObj, points){
 			health: 230,
 			size: new Point(90, 90),
 			sprite: resources.sprites.get("enemy_2"),
-		});	
-	this.attackDelay = 500;
+		});
+	this.attackDelay = 700;
 	this.finalPos = null;
 	this.startPos = null;
 	this.points = points;
@@ -115,15 +115,15 @@ let SniperEnemy = function(entObj, points){
 	this.state = this.enter;
 	this.stateDir = 1;
 	this.isMoving = false;
-	this.state();	
+	this.state();
 }
 
 SniperEnemy.prototype = Object.create(DefaultEnemy.prototype);
 
 SniperEnemy.prototype.fire = function(){
 
-	let dx = game.players()[0].pos.x - this.pos.x;  
-	let dy = game.players()[0].pos.y - this.pos.y;  
+	let dx = game.players()[0].pos.x - this.pos.x;
+	let dy = game.players()[0].pos.y - this.pos.y;
 	let dir = new Point(dx, dy).normalize();
 	game.bullets().push(new DefaultEnemyBullet({
 		damage: 2,

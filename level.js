@@ -133,7 +133,7 @@ DynLevel.prototype.cleanUp = function(){
 
 (function(){
 	window.resources.levels = [];
-	
+
 	// Level 1
 	let l = new DynLevel("Demo1");
 	l.addStage(10000, 2, 1000,
@@ -240,9 +240,9 @@ DynLevel.prototype.cleanUp = function(){
 				let delta_y = game.border.y * 0.2;
 				let x = game.border.x * 0.3 - delta_x;
 				let y = game.border.y * 0.4;
-				
+
 				switch (id) {
-				case 0: 
+				case 0:
 					for (let i = 0; i < 3; i++){
 						ans.push(new Point(x + delta_x, y));
 					}
@@ -255,15 +255,15 @@ DynLevel.prototype.cleanUp = function(){
 					for (let i = 0; i < 4; i++){
 						ans.push(new Point(x + delta_x * Math.random(), y));
 						ans.push(new Point(x + delta_x * (3.6 - Math.random()), y - delta_y ));
-					}						
+					}
 					break;
 				}
 				return ans;
 			}
 		);
 	resources.levels.push(l);
-	
-	// Level 3 
+
+	// Level 3
 	l = new DynLevel("Demo3");
 	l.addStage(15000, 10, 1000,
 			function(id){
@@ -307,7 +307,7 @@ DynLevel.prototype.cleanUp = function(){
 			function(id){
 				let ans = [];
 				let r = game.border.x * 0.1;
-				
+
 				let x = game.border.x * (Math.random() * 0.95 + (id) * 0.001);
 				let y = game.border.y * (Math.random() * 0.3 + 0.2);
 
