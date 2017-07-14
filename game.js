@@ -199,11 +199,11 @@ let Game = function(context) {
 				attack: "KeyV"
 			});
 		input2 = playerHandleInput({
-				up: "Numpad8",
-				down: "Numpad5",
-				left: "Numpad4",
-				right: "Numpad6",
-				attack: "ArrowDown"
+				up: "ArrowUp",
+				down: "ArrowDown",
+				left: "ArrowLeft",
+				right: "ArrowRight",
+				attack: "Slash"
 			});
 		window.addEventListener("keydown", function(e){
 			if (e.code == "KeyP")

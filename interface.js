@@ -4,6 +4,7 @@ let Menu = function() {
 	this.createDeathMenu();
 	this.createWinMenu();
 	this.createTitle();
+	this.createHelpMenu();
 
 	let temp = this;
 	window.addEventListener("resize", function(){
@@ -18,7 +19,7 @@ Menu.prototype.createMainMenu = function(){
 	let menuTitle = document.createElement('div');
 	let player1 = document.createElement('div');
 	let player2 = document.createElement('div');
-	let settings = document.createElement('div');
+	let help = document.createElement('div');
 
 	player1.onclick = function(){
 			game.setPlayersCount(1);
@@ -35,18 +36,23 @@ Menu.prototype.createMainMenu = function(){
 	menuTitle.setAttribute("class", "title");
 	player1.setAttribute("class","button");
 	player2.setAttribute("class","button");
-	settings.setAttribute("class","button");
+	help.setAttribute("class","button");
 
-	menuTitle.textContent = "SPACE SHOOTER";
+	menuTitle.textContent = "FEFU INVADERS";
 	player1.textContent = "1 PLAYER";
 	player2.textContent = "2 PLAYERS";
-	settings.textContent = "SETTINGS"
+	help.textContent = "HELP"
+	let t = this;
+	help.onclick = function(){
+		t.displayHelpMenu(true);
+		t.displayMainMenu(false);
+	}
 
 	document.body.appendChild(menuMain);
 	menuMain.appendChild(content);
 	content.appendChild(player1);
 	content.appendChild(player2);
-	content.appendChild(settings);
+	content.appendChild(help);
 	content.appendChild(menuTitle);
 
 }
@@ -65,20 +71,28 @@ Menu.prototype.createPauseMenu = function() {
 	let menuPause = document.createElement('div');
 	let content = document.createElement('div');
 	let resume = document.createElement('div');
+	let menu = document.createElement('div');
 
 	menuPause.setAttribute("class", "menuPause");
 	content.setAttribute("class", "content");
 	resume.setAttribute("class", "button");
+	menu.setAttribute("class", "button");
 
 	resume.onclick = function(){
 		game.setState("resume");
 	};
 
+	menu.onclick = function(){
+		game.setState("menu");
+	};
+
 	document.body.appendChild(menuPause);
 	menuPause.appendChild(content);
 	content.appendChild(resume);
+	content.appendChild(menu);
 
 	resume.textContent = "RESUME";
+	menu.textContent = "MENU";
 }
 
 Menu.prototype.displayPauseMenu = function(show) {
@@ -207,14 +221,51 @@ Menu.prototype.displayTitle = function(show, content) {
 	this.resize();
 }
 
+//Help menu
+Menu.prototype.createHelpMenu = function() {
+	let menuHelp = document.createElement('div');
+	let move = document.createElement('div');
+	let shot = document.createElement('div');
+	let back = document.createElement('div');
+
+
+	menuHelp.setAttribute("class", "menuHelp");
+	move.setAttribute("class", "moveShot");
+	shot.setAttribute("class", "moveShot");
+	back.setAttribute("class", "back");
+
+	document.body.appendChild(menuHelp);
+	menuHelp.appendChild(move);
+	menuHelp.appendChild(shot);
+	menuHelp.appendChild(back);
+
+	let t = this;
+	back.onclick = function(){
+		t.displayHelpMenu(false);
+		t.displayMainMenu(true);
+	}
+
+	move.textContent = "Player 1\n[W A S D]\n[SPACE]";
+	shot.textContent = "Player 2\n[UP DOWN LEFT RIGHT]\n[/]";
+	back.textContent = "BACK"
+	this.resize();
+}
+
+Menu.prototype.displayHelpMenu = function(show) {
+	let menu = document.body.querySelector("div.menuHelp");
+	if (show) {
+		menu.style.display = 'block';
+	} else {
+		menu.style.display = 'none';
+	}
+}
+
 //Resize menus
 Menu.prototype.resize = function() {
-	let menus = document.body.querySelectorAll("div.menuPause, div.menuMain, div.menuDeath, div.menuWin");
+	let menus = document.body.querySelectorAll("div.menuPause, div.menuMain, div.menuDeath, div.menuWin, div.menuHelp");
 
 	let mainTitle = document.body.querySelector("div.mainTitle");
 	mainTitle.style.fontSize = canvas.height * 0.06 + "px";
-	//mainTitle.style.width = canvas.width * 0.5;
-	//mainTitle.style.height = canvas.height * 0.8;
 	let width = parseInt(mainTitle.clientWidth),
 		height = parseInt(mainTitle.clientHeight);
 	mainTitle.style.width = canvas.width;
@@ -231,13 +282,14 @@ Menu.prototype.resize = function() {
 		menus[i].style.left = canvas.style.left;
 
 		let content = menus[i].querySelector("div.content");
-		content.style.width = w * 0.5;
-		content.style.height = h * 0.8;
-		content.style.left = w * 0.25;
-		content.style.top = h * 0.25 * 0.4;
-
-		w = parseInt(content.style.width);
-		h = parseInt(content.style.height);
+		if (content != null){
+			content.style.width = w * 0.5;
+			content.style.height = h * 0.8;
+			content.style.left = w * 0.25;
+			content.style.top = h * 0.25 * 0.4;
+			w = parseInt(content.style.width);
+			h = parseInt(content.style.height);
+		}
 
 		let score = menus[i].querySelector("div.score");
 		if (score != null){
@@ -248,18 +300,43 @@ Menu.prototype.resize = function() {
 			score.style.top = h * 0.1 * 2;
 		}
 
+		let move = menus[i].querySelectorAll("div.moveShot");
+		if (move.length != 0) {
+			let width = parseInt(move[0].clientWidth),
+				height = parseInt(move[0].clientHeight);
+			move[0].style.fontSize = canvas.height * 0.04 + "px";
+			move[0].style.width = canvas.width;
+			move[0].style.top = h * 0.2 * 0.5;// - height;
+			width = parseInt(move[1].clientWidth);
+			height = parseInt(move[1].clientHeight);
+			move[1].style.fontSize = canvas.height * 0.04 + "px";
+			move[1].style.width = canvas.width;
+			move[1].style.top = h * 0.2 * 2; //*(1+1) - height * 0.5;
+		}
+
+		let back = menus[i].querySelector("div.back");
+		if (back != null){
+			back.style.fontSize = canvas.height * 0.04 + "px";
+			back.style.width = w * 0.8;
+			back.style.height = h * 0.13;
+			back.style.left = w * 0.25 * 0.4;
+			back.style.top = h * 0.2 * 4;
+		}
+
 		let buttons = menus[i].querySelectorAll("div.button");
-		buttons[0].style.width = w * 0.6;
-		buttons[0].style.height = h * 0.09;
-		buttons[0].style.left = w * 0.2;
-		buttons[0].style.top = 0.4*h;
-		buttons[0].style.fontSize = w * 0.06;
-			for (var j = 1; j<buttons.length; j++) {
-				buttons[j].style.fontSize = w * 0.06;
-				buttons[j].style.width = w * 0.6;
-				buttons[j].style.height = h * 0.09;
-				buttons[j].style.left = w * 0.2;
-				buttons[j].style.top = (parseInt(buttons[0].style.top))+ j*h * 0.15;
+		if (buttons.length != 0){
+			buttons[0].style.width = w * 0.6;
+			buttons[0].style.height = h * 0.09;
+			buttons[0].style.left = w * 0.2;
+			buttons[0].style.top = 0.4*h;
+			buttons[0].style.fontSize = w * 0.06;
+				for (let j = 1; j < buttons.length; j++) {
+					buttons[j].style.fontSize = w * 0.06;
+					buttons[j].style.width = w * 0.6;
+					buttons[j].style.height = h * 0.09;
+					buttons[j].style.left = w * 0.2;
+					buttons[j].style.top = (parseInt(buttons[0].style.top))+ j*h * 0.15;
+			}
 		}
 
 		let menuTitle = menus[i].querySelector("div.title");
