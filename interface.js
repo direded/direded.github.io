@@ -3,6 +3,7 @@ let Menu = function() {
 	this.createPauseMenu();
 	this.createDeathMenu();
 	this.createWinMenu();
+	this.createTitle();
 
 	let temp = this;
 	window.addEventListener("resize", function(){
@@ -187,9 +188,40 @@ Menu.prototype.updateScore = function(score) {
 		scr[i].textContent = "SCORE: " + score;
 	}
 }
+
+//Title
+Menu.prototype.createTitle = function() {
+	let title = document.createElement('div');
+	document.body.appendChild(title);
+	title.setAttribute("class", "mainTitle");
+}
+
+Menu.prototype.displayTitle = function(show, content) {
+	let title = document.body.querySelector("div.mainTitle");
+	console.log(title.style);
+	if (show) {
+		title.style.display = "block";
+	} else {
+		title.style.display = "none";
+	}
+	if (content) title.textContent = content;
+	this.resize();
+}
+
 //Resize menus
 Menu.prototype.resize = function() {
 	let menus = document.body.querySelectorAll("div.menuPause, div.menuMain, div.menuDeath, div.menuWin");
+
+	let mainTitle = document.body.querySelector("div.mainTitle");
+	mainTitle.style.fontSize = canvas.height * 0.06 + "px";
+	//mainTitle.style.width = canvas.width * 0.5;
+	//mainTitle.style.height = canvas.height * 0.8;
+	let width = parseInt(mainTitle.clientWidth),
+		height = parseInt(mainTitle.clientHeight);
+	console.log(height);
+	mainTitle.style.left = parseInt(canvas.style.left) + canvas.width * 0.5 - width * 0.5;
+	mainTitle.style.top = parseInt(canvas.style.top) + canvas.height * 0.3 - height * 0.5;
+
 	for (var i = 0; i < menus.length; i++) {
 		let w = canvas.width;
 		let h = canvas.height;
@@ -198,7 +230,6 @@ Menu.prototype.resize = function() {
 		menus[i].style.height = h;
 		menus[i].style.top = canvas.style.top;
 		menus[i].style.left = canvas.style.left;
-
 
 		let content = menus[i].querySelector("div.content");
 		content.style.width = w * 0.5;
@@ -248,6 +279,7 @@ Menu.prototype.hideAll = function(){
 	this.displayMainMenu(false);
 	this.displayDeathMenu(false);
 	this.displayPauseMenu(false);
+	this.displayTitle(false);
 }
 
 let HUD = function(){

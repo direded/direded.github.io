@@ -37,6 +37,10 @@ let Game = function(context) {
 
 	let levelFinished = function(){
 		console.log("Level " + level.name + " finished");
+		menu.displayTitle(true, "Level " + level.name + " finished");
+		setTimeout(function() {
+				game.menu.displayTitle(false);
+			}, 2000);
 		levelLoaded = false;
 		if (++curLevel < resources.levels.length){
 			level = resources.levels[curLevel];
@@ -335,6 +339,7 @@ let Game = function(context) {
 		background: bg,
 		setPlayersCount: function(v){playersCount = v},
 		getPlayersCount: function(){return playersCount},
+		menu: menu,
 	}
 };
 

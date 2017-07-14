@@ -75,6 +75,17 @@ canvas {
 	user-select: none;
 }
 
+.mainTitle {
+	cursor: default;
+	text-align: center;
+	position: absolute;
+	font-family: 'Press Start 2P';
+	font-weight: bold;
+	color: white;
+	display: block;
+	user-select: none;
+}
+
 .score {
 	cursor: default;
 	text-align: center;
