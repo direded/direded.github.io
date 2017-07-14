@@ -1,7 +1,8 @@
 let Game = function(context) {
 	var ents = [],
 		bullets = [],
-		plrs = [];
+		plrs = [],
+		bonus = [];
 	let last = performance.now(),
 		step = 20,
 		delta = 0,
@@ -39,6 +40,7 @@ let Game = function(context) {
 		levelLoaded = false;
 		if (++curLevel < resources.levels.length){
 			level = resources.levels[curLevel];
+			levelLoaded = true;
 		} else {
 			setState("finished");
 		}
@@ -53,6 +55,7 @@ let Game = function(context) {
 	let cleanUpGame = function(){
 		ents.forEach(function(e){e.kill()});
 		bullets.forEach(function(e){e.kill()});
+		bonus.forEach(function(e){e.kill()});
 		levelLoaded = false;
 		curLevel = 0;
 		score = 0;
@@ -142,6 +145,7 @@ let Game = function(context) {
 	let spawnPlayer = function(id){
 		plrs[id].isAlive = true;
 		plrs[id].health = 3;
+		plrs[id].weapon = new DefaultWeapon(plrs[id]);
 		plrs[id].pos = new Point(game.border.x / 2, game.border.y - 60);
 	}
 
@@ -155,6 +159,10 @@ let Game = function(context) {
 
 	let getPlayers = function(){
 		return plrs;
+	}
+
+	let getBonus = function(){
+		return bonus;
 	}
 
 	let initGame = function(){
@@ -225,6 +233,9 @@ let Game = function(context) {
 					bullets[b].kill();
 					plrs[p].hit();
 				}
+			for (let bon of bonus)
+				if (bon.checkCollision(plrs[p]))
+					bon.use(plrs[p]);
 		}
 		for (let b in bullets){
 		 	if (bullets[b].isAbroad()){
@@ -260,6 +271,9 @@ let Game = function(context) {
 		bullets.forEach(function(ent){
 			ent.update(step);
 		});
+		bonus.forEach(function(ent){
+			ent.update(step);
+		});
 		bg.update(step);
 		resources.anim.update(step);
 		checkCollision();
@@ -274,6 +288,12 @@ let Game = function(context) {
 			if (b.isAlive)
 				newArr.push(b);
 		ents = newArr.slice();
+
+		newArr = new Array();
+		for (let b of bonus)
+			if (b.isAlive)
+				newArr.push(b);
+		bonus = newArr.slice();
 	};
 
 	let render = function(ctx) {
@@ -287,6 +307,9 @@ let Game = function(context) {
 		bullets.forEach(function(ent){
 			ent.render(ctx);
 		});
+
+		bonus.forEach(function(ent){
+			ent.render(ctx);
 		resources.anim.render(ctx);
 		hud.render();
 	};
@@ -313,6 +336,7 @@ let Game = function(context) {
 		levelFinished: levelFinished,
 		levelKilled: levelKilled,
 		ents: getEnts,
+		bonus: getBonus,
 		bullets: getBullets,
 		players: getPlayers,
 		setState: setState,

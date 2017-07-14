@@ -98,3 +98,37 @@ DefaultEnemy.prototype.mainMove = function(time){
 		}
 	}
 }
+
+let SniperEnemy = function(entObj, points){
+	Enemy.call(this,{
+			pos: entObj.pos,
+			speed: 250,
+			health: 230,
+			size: new Point(90, 90),
+			sprite: resources.sprites.get("enemy_2"),
+		});	
+	this.attackDelay = 500;
+	this.finalPos = null;
+	this.startPos = null;
+	this.points = points;
+	this.curPoint = 0;
+	this.state = this.enter;
+	this.stateDir = 1;
+	this.isMoving = false;
+	this.state();	
+}
+
+SniperEnemy.prototype = Object.create(DefaultEnemy.prototype);
+
+SniperEnemy.prototype.fire = function(){
+
+	let dx = game.players()[0].pos.x - this.pos.x;  
+	let dy = game.players()[0].pos.y - this.pos.y;  
+	let dir = new Point(dx, dy).normalize();
+	game.bullets().push(new DefaultEnemyBullet({
+		damage: 2,
+		side: "enemy",
+		pos: this.pos.clone().add(new Point(0, this.sprite.origin.y)),
+		dir: dir,
+	}));
+}
