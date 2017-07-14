@@ -14,7 +14,6 @@ let Game = function(context) {
 	let curLevel = 0;
 	let levelLoaded = false;
 	let level = resources.levels[curLevel];
-	let loaded = false;
 
 	let playersCount = 1;
 
@@ -37,14 +36,15 @@ let Game = function(context) {
 
 	let levelFinished = function(){
 		console.log("Level " + level.name + " finished");
-		menu.displayTitle(true, "Level " + level.name + " finished");
-		setTimeout(function() {
-				game.menu.displayTitle(false);
-			}, 2000);
 		levelLoaded = false;
 		if (++curLevel < resources.levels.length){
-			level = resources.levels[curLevel];
+			menu.displayTitle(true, "Level " + level.name + " finished");
+			setTimeout(function() {
+					game.menu.displayTitle(false);
+				}, 2000);
 			levelLoaded = true;
+			level = resources.levels[curLevel];
+			level.cleanUp();
 		} else {
 			setState("finished");
 		}
@@ -65,6 +65,8 @@ let Game = function(context) {
 		score = 0;
 		resources.anim.cleanUp();
 		level.cleanUp();
+		curLevel = 0;
+		level = resources.levels[curLevel];
 	}
 
 	let startState = function(){
@@ -190,7 +192,6 @@ let Game = function(context) {
 			if (e.code == "KeyP")
 				setState("pause");
 		}, false);
-		loaded = true;
 		plrs.push(new Player({
 				pos: new Point(game.border.x / 2, game.border.y - 60),
 				speed: 380,

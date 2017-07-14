@@ -34,7 +34,7 @@ DefaultEnemyBullet.prototype = Object.create(Bullet.prototype);
 let DefaultWeapon = function(plr){
 	Weapon.call(this, {
 			bullet: DefaultBullet,
-			delay: 500,
+			delay: 1000,
 			plr: plr,
 		});
 }
@@ -46,7 +46,7 @@ DefaultWeapon.prototype._fire = function(){
 	resources.sound.play("pew_1", 0.5);
 	game.bullets().push(new this.bullet({
 			dir: new Point(0, -1),
-			damage: 105,
+			damage: 210,
 			side: "player",
 			pos: p
 		}));
@@ -72,7 +72,7 @@ ShotgunBullet.prototype = Object.create(Bullet.prototype);
 let ShotgunWeapon = function(plr){
 	Weapon.call(this, {
 			bullet: ShotgunBullet,
-			delay: 500,
+			delay: 800,
 			plr: plr,
 		});
 }
@@ -83,20 +83,20 @@ ShotgunWeapon.prototype._fire = function() {
 	let p = new Point (this.plr.pos.x, this.plr.pos.y - this.plr.sprite.origin.y);
 	resources.sound.play("shotgun", 0.5);
 	game.bullets().push(new this.bullet({
-			dir: (new Point(0.3, -1)).normalize(),
-			damage: 70,
+			dir: (new Point(0.2, -1)).normalize(),
+			damage: 50,
 			side: "player",
 			pos: p
 			}));
 	game.bullets().push(new this.bullet({
 			dir: (new Point(0, -1)).normalize(),
-			damage: 70,
+			damage: 50,
 			side: "player",
 			pos: p
 			}));
 	game.bullets().push(new this.bullet({
-			dir: (new Point(-0.3, -1)).normalize(),
-			damage: 70,
+			dir: (new Point(-0.2, -1)).normalize(),
+			damage: 50,
 			side: "player",
 			pos: p
 			}));

@@ -198,7 +198,6 @@ Menu.prototype.createTitle = function() {
 
 Menu.prototype.displayTitle = function(show, content) {
 	let title = document.body.querySelector("div.mainTitle");
-	console.log(title.style);
 	if (show) {
 		title.style.display = "block";
 	} else {
@@ -218,7 +217,7 @@ Menu.prototype.resize = function() {
 	//mainTitle.style.height = canvas.height * 0.8;
 	let width = parseInt(mainTitle.clientWidth),
 		height = parseInt(mainTitle.clientHeight);
-	console.log(height);
+	mainTitle.style.width = canvas.width;
 	mainTitle.style.left = parseInt(canvas.style.left) + canvas.width * 0.5 - width * 0.5;
 	mainTitle.style.top = parseInt(canvas.style.top) + canvas.height * 0.3 - height * 0.5;
 
