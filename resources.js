@@ -7,6 +7,7 @@ resources.img.load("src/img/ship2.png", "p_ship_2");
 resources.img.load("src/img/back.gif","background");
 resources.img.load("src/img/ship3.png", "enemy");
 resources.img.load("src/img/heart.png", "heart");
+resources.img.load("src/img/1.png", "enemy_1");
 
 resources.img.onReady(function(){
 		resources.sprites.add(resources.img.get("p_ship_1"), "plr_1", undefined, new Point(96, 96));
@@ -17,6 +18,7 @@ resources.img.onReady(function(){
 		resources.sprites.add(resources.img.get("default_bullet"), "default_bullet", undefined, new Point(20, 20));
 		resources.sprites.add(resources.img.get("machinegun_bullet"), "machinegun_bullet", undefined, new Point(20, 20));
 		resources.sprites.add(resources.img.get("heart"), "heart", undefined, new Point(40, 35));
+		resources.sprites.add(resources.img.get("enemy_1"), "enemy_2", undefined, new Point(108, 108));
 	});
 resources.img.onReady(game.init);
 

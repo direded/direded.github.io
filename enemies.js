@@ -6,7 +6,7 @@ let DefaultEnemy = function(entObj, points){ // entObj: pos
 			size: new Point(90, 90),
 			sprite: resources.sprites.get("enemy_1"),
 		});
-	this.attackDelay = 300;
+	this.attackDelay = 850;
 	this.finalPos = null;
 	this.startPos = null;
 	this.points = points;
@@ -98,3 +98,5 @@ DefaultEnemy.prototype.mainMove = function(time){
 		}
 	}
 }
+
+
