@@ -39,6 +39,7 @@ let Game = function(context) {
 		levelLoaded = false;
 		if (++curLevel < resources.levels.length){
 			level = resources.levels[curLevel];
+			levelLoaded = true;
 		} else {
 			setState("finished");
 		}
