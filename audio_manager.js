@@ -65,6 +65,14 @@
 		allVol = vol;
 	}
 
+	function stopAll() {
+		console.log(musics);
+		for (a in musics){
+			musics[a].pause();
+			musics[a].currentTime = 0;
+		}
+	}
+
 	window.resources = window.resources || {};
 	window.resources.music = {
 		load: load,
@@ -72,5 +80,6 @@
 		volume: volume,
 		pause: pause,
 		overallVolume: overallVolume,
+		stopAll: stopAll,
 	};
 })();

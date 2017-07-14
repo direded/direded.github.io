@@ -33,5 +33,12 @@ resources.img.onReady(game.init);
 resources.sound.load("src/audio/pew.wav", "pew_1");
 resources.sound.load("src/audio/shotgun.wav", "shotgun");
 resources.sound.load("src/audio/machinegun.wav", "machinegun");
+resources.sound.load("src/audio/explode2.wav", "explode");
 
-resources.music.load("https://cs5-4v4.vk-cdn.net/p26/98518656611b03.mp3?extra=UIDWEO9-FQfgMdO48YTDIQ2tAGzVr1NfC19r8COGjmuiDevIMUfui1wFI0BT2Qwsz44Q5o7bCTAeWmci4wtMsV8Z9eRhf_ax5hNxMiC7zc1vp25ApRAAqzJTbw1vu_ppqo-wTOY7IQ", "shooting_stars");
+//sorry Solgryn
+resources.music.load("src/audio/I wanna be the boshy - megamen them.mp3", "megamen");
+resources.music.load("src/audio/I wanna be the boshy - sonic theme.mp3", "sonic");
+resources.music.load("src/audio/I wanna be the boshy - The tower.mp3", "tower");
+resources.music.load("src/audio/I wanna be the boshy - world 6.mp3", "world6");
+resources.music.load("src/audio/I wanna be the boshy - lol you died.mp3", "you_died");
+resources.music.load("src/audio/i dont care.mp3", "dont_care");

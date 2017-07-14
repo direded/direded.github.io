@@ -14,6 +14,7 @@ let Game = function(context) {
 	let curLevel = 0;
 	let levelLoaded = false;
 	let level = resources.levels[curLevel];
+	let justInited = false;
 
 	let playersCount = 1;
 
@@ -58,7 +59,7 @@ let Game = function(context) {
 		levelLoaded = true;
 	};
 
-	let cleanUpGame = function(){
+	let cleanUpGame = function() {
 		ents.forEach(function(e){e.kill()});
 		bullets.forEach(function(e){e.kill()});
 		bonus.forEach(function(e){e.kill()});
@@ -71,8 +72,14 @@ let Game = function(context) {
 		level = resources.levels[curLevel];
 	}
 
-	let startState = function(){
-		resources.music.play("shooting_stars", 0.5, true);
+	let startState = function() {
+		resources.music.stopAll();
+		let i = Math.random() * (4.4 - 0.6) + 0.6;
+		i = Math.round(i);
+		if (i == 1) resources.music.play("megamen", 0.35, true);
+		if (i == 2) resources.music.play("sonic", 0.35, true);
+		if (i == 3) resources.music.play("tower", 0.5, true);
+		if (i == 4) resources.music.play("world6", 0.5, true);
 		spawnPlayer(0);
 		if (playersCount == 2)
 			spawnPlayer(1);
@@ -82,7 +89,9 @@ let Game = function(context) {
 		requestAnimationFrame(loop);
 	};
 
-	let overState = function(){
+	let overState = function() {
+		resources.music.stopAll();
+		resources.music.play("you_died", 0.5, true);
 		menu.updateScore(score);
 		menu.displayDeathMenu(true);
 		console.log("Showing game over menu");
@@ -91,7 +100,9 @@ let Game = function(context) {
 		isPause = true;
 	};
 
-	let finishedState = function(){
+	let finishedState = function() {
+		resources.music.stopAll();
+		resources.music.play("dont_care", 0.5, true);
 		menu.updateScore(score);
 		menu.displayWinMenu(true);
 		console.log("Showing finish menu");
@@ -114,12 +125,15 @@ let Game = function(context) {
 	};
 
 	let menuState = function(){
+		if (!justInited)
+			resources.music.stopAll();
+		justInited = false;
 		menu.displayMainMenu(true);
 		console.log("Showing menu");
 		isPause = true;
 	};
 
-	let setState = function(newState){
+	let setState = function(newState) {
 		let temp = state;
 		switch (newState) {
 			case "menu":
@@ -175,6 +189,7 @@ let Game = function(context) {
 	}
 
 	let initGame = function(){
+		justInited = true;
 		bg = new Background(resources.img.get("background"), canvas);
 		input1 = playerHandleInput({
 				up: "KeyW",
@@ -210,8 +225,8 @@ let Game = function(context) {
 				sprite: resources.sprites.get("plr_2")}
 			));
 		input2.connectPlayer(plrs[plrs.length - 1]);
-		plrs[0].kill();
-		plrs[1].kill();
+		plrs[0].isAlive = false;
+		plrs[1].isAlive = false;
 		hud = new HUD();
 		setState("menu");
 	};

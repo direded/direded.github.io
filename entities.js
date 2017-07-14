@@ -172,6 +172,7 @@ Player.prototype.hit = function(){
 			Math.random() * this.size.x * 0.3,
 			Math.random() * this.size.y * 0.3)),
 		this.sprite.size.clone().scale(Math.random() * (0.55 - 0.35) + 0.35), 810);
+	resources.sound.play("explode", 0.5);
 	if (--this.health > 0) return;
 
 	this.kill();
