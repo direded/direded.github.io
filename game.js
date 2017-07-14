@@ -37,6 +37,8 @@ let Game = function(context) {
 	let levelFinished = function(){
 		console.log("Level " + level.name + " finished");
 		levelLoaded = false;
+		if (plrs[0].isAlive) plrs[0].health = 3;
+		if (plrs[1].isAlive) plrs[1].health = 3;
 		if (++curLevel < resources.levels.length){
 			menu.displayTitle(true, "Level " + level.name + " finished");
 			setTimeout(function() {
