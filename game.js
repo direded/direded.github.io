@@ -44,6 +44,7 @@ let Game = function(context) {
 		levelLoaded = false;
 		if (++curLevel < resources.levels.length){
 			level = resources.levels[curLevel];
+			levelLoaded = true;
 		} else {
 			setState("finished");
 		}
@@ -62,6 +63,7 @@ let Game = function(context) {
 		levelLoaded = false;
 		curLevel = 0;
 		score = 0;
+		resources.anim.cleanUp();
 		level.cleanUp();
 	}
 
@@ -249,6 +251,12 @@ let Game = function(context) {
 				if (a = ents[e].checkCollision(bullets[b])){
 					bullets[b].kill();
 					ents[e].health -= bullets[b].damage;
+					resources.anim.play(
+						"explosion_1",
+						ents[e].pos.clone().add(new Point(
+							Math.random() * ents[e].size.x * 0.3,
+							Math.random() * ents[e].size.y * 0.3)),
+						ents[e].size.clone().scale(Math.random() * (0.55 - 0.35) + 0.35), 810);
 					if (ents[e].health <= 0){
 						addScore(ents[e].value || 0);
 						ents[e].killByPlr();
@@ -272,6 +280,7 @@ let Game = function(context) {
 			ent.update(step);
 		});
 		bg.update(step);
+		resources.anim.update(step);
 		checkCollision();
 		let newArr = new Array();
 		for (let i of bullets)
@@ -303,9 +312,11 @@ let Game = function(context) {
 		bullets.forEach(function(ent){
 			ent.render(ctx);
 		});
+
 		bonus.forEach(function(ent){
 			ent.render(ctx);
 		});
+		resources.anim.render(ctx);
 		hud.render();
 	};
 

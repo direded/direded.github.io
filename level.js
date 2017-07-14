@@ -4,11 +4,12 @@
 	this.enemy = ent;
 }*/
 
-let Stage = function(maxTime, enemyMax, delay, getPosPoint, generatePoint){
+let Stage = function(maxTime, enemyMax, delay, enemyClass, getPosPoint, generatePoint){
 	this.enemies = [];
 	this.enemyCount = 0;
 	this.enemyKilled = 0;
 	this.enemyMax = enemyMax;
+	this.enemyClass = enemyClass;
 	this.time = 0;
 	this.delay = delay;
 	this.maxTime = maxTime;
@@ -18,12 +19,13 @@ let Stage = function(maxTime, enemyMax, delay, getPosPoint, generatePoint){
 
 Stage.prototype.spawnEnt = function(){
 	this.enemyCount++;
-	this.enemies.push(new DefaultEnemy(
+	this.enemies.push(new (this.enemyClass(this.enemies.length))(
 			{pos: this.getPosPoint(this.enemies.length)},
 			this.generatePoint(this.enemies.length),
 		));
 	game.ents().push(this.enemies[this.enemies.length - 1]);
 }
+
 
 Stage.prototype.end = function(){
 	this.time = -2;
@@ -81,10 +83,10 @@ let DynLevel = function(name){
 DynLevel.prototype.stagePauseDuration = 3000;
 DynLevel.prototype.startPauseDuration = 4000;
 
-DynLevel.prototype.addStage = function(maxTime, enemyMax, delay, startPos, genPoints){
+DynLevel.prototype.addStage = function(maxTime, enemyMax, delay, enemyClass, startPos, genPoints){
 	if (this.stageId == -1)
 		this.stageId = 0;
-	this.stages.push(new Stage(maxTime, enemyMax, delay, startPos, genPoints));
+	this.stages.push(new Stage(maxTime, enemyMax, delay, enemyClass, startPos, genPoints));
 };
 
 DynLevel.prototype.update = function(step){
@@ -137,9 +139,13 @@ DynLevel.prototype.cleanUp = function(){
 
 (function(){
 	window.resources.levels = [];
-	let l = new DynLevel("Demo1");
 
+	// Level 1
+	let l = new DynLevel("Demo1");
 	l.addStage(10000, 2, 1000,
+			function(id){
+				return DefaultEnemy;
+			},
 			function(id){
 				return new Point(-100, id * 50 + 100);
 			},
@@ -164,27 +170,53 @@ DynLevel.prototype.cleanUp = function(){
 			}
 		);
 
-	l.addStage(20000, 4, 1000,
-		function(id){
-				return new Point(game.border.x / 2, -100);
+	l.addStage(15000, 3, 1000,
+			function(id){
+					return SniperEnemy;
 			},
-		function(id){
-			let ans = [];
+			function(id){
+				return new Point(game.border.x * 0.5, -100);
+			},
 
-			let left = game.border.x * 0.05 + id * Math.random() * 50;
-			let top = game.border.y * 0.05 + id * Math.random() * 50;
-
-			ans.push(new Point(game.border.x / 2 - 10 * id * Math.random(), game.border.y / 2 + 60 * id * Math.random()));
-			ans.push(new Point(left, top));
-			ans.push(new Point(left, top * 2));
-			ans.push(new Point(game.border.x - left, top * 2));
-			ans.push(new Point(game.border.x - left,  top));
-			console.log(ans);
-			return ans;
-		}
+			function(id){
+				let ans = [];
+				let x = game.border.x * 0.1;
+				let y = game.border.y * 0.1;
+				ans.push(new Point(x, y + id * 200));
+				ans.push(new Point(game.border.x - x, y + id * 200));
+				return ans;
+			}
 		);
 
+	l.addStage(20000, 4, 1000,
+			function(id){
+					return DefaultEnemy;
+				},
+			function(id){
+					return new Point(game.border.x * 0.5, -100);
+				},
+			function(id){
+				let ans = [];
+
+				let left = game.border.x * 0.05 + id * Math.random() * 50;
+				let top = game.border.y * 0.05 + id * Math.random() * 50;
+
+				ans.push(new Point(game.border.x / 2 - 10 * id * Math.random(), game.border.y / 2 + 60 * id * Math.random()));
+				ans.push(new Point(left, top));
+				ans.push(new Point(left, top * 2));
+				ans.push(new Point(game.border.x - left, top * 2));
+				ans.push(new Point(game.border.x - left,  top));
+				return ans;
+			}
+		);
+	resources.levels.push(l);
+
+	// Level 2
+	l = new DynLevel("Demo2");
 	l.addStage(10000, 7, 1000,
+			function(id){
+				return DefaultEnemy;
+			},
 			function(id){
 				return new Point(Math.random() * (game.border.x + 100 + 100 + 1) - 100, -100);
 			},
@@ -201,6 +233,9 @@ DynLevel.prototype.cleanUp = function(){
 		);
 
 	l.addStage(12000, 8, 1000,
+			function(id){
+				return DefaultEnemy;
+			},
 			function(id){
 					return new Point(Math.random() * 150 + 100, -150);
 			},
@@ -232,8 +267,46 @@ DynLevel.prototype.cleanUp = function(){
 				return ans;
 			}
 		);
+	resources.levels.push(l);
 
-	l.addStage(10000, 15, 1000,
+	// Level 3
+	l = new DynLevel("Demo3");
+	l.addStage(15000, 10, 1000,
+			function(id){
+				if (id < 3)
+					return SniperEnemy;
+				else
+					return DefaultEnemy;
+			},
+			function(id){
+				return new Point(game.border.x * 0.5, -100);
+			},
+
+			function(id){
+				let ans = [];
+				if (id < 2) {
+					let x = game.border.x * 0.1;
+					let y = game.border.y * 0.1;
+					ans.push(new Point(x, y + id * 200));
+					ans.push(new Point(game.border.x - x, y + id * 200));
+					let count = Math.floor(Math.random() * (6 - 2 + 1)) + 2;
+				}
+				else{
+					let count = Math.floor(Math.random() * (6 - 2 + 1)) + 2;
+					let pointY = 0.5 * game.border.y * (id+1) / this.enemyMax;
+					ans.push(new Point(0, pointY));
+					for (let i = 0; i < count; i++)
+						ans.push(new Point(Math.random() * (game.border.x + 1), pointY));
+					ans.push(new Point(game.border.x, pointY));
+				}
+				return ans;
+			}
+		);
+
+	l.addStage(15000, 15, 1000,
+			function(id){
+				return DefaultEnemy;
+			},
 			function(id){
 				return new Point(game.border.x * 0.5, -100);
 			},
