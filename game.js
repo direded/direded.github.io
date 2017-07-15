@@ -196,7 +196,7 @@ let Game = function(context) {
 				down: "KeyS",
 				left: "KeyA",
 				right: "KeyD",
-				attack: "KeyV"
+				attack: "Space"
 			});
 		input2 = playerHandleInput({
 				up: "ArrowUp",

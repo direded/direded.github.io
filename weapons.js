@@ -2,7 +2,7 @@
 let DefaultBullet = function(obj){ // dir, damage, side, pos
 	Bullet.call(this, {
 			pos: obj.pos,
-			speed: 400,
+			speed: 700,
 			health: 1,
 			size: new Point(16, 32),
 			sprite: resources.sprites.get("default_bullet"),
