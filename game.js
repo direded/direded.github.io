@@ -274,7 +274,7 @@ let Game = function(context) {
 						ents[e].pos.clone().add(new Point(
 							Math.random() * ents[e].size.x * 0.3,
 							Math.random() * ents[e].size.y * 0.3)),
-						ents[e].size.clone().scale(Math.random() * (0.55 - 0.35) + 0.35), 810);
+						ents[e].size.clone().scale(Math.random() * (0.55 - 0.35) + 0.35), 3240);
 					if (ents[e].health <= 0){
 						addScore(ents[e].value || 0);
 						ents[e].killByPlr();
