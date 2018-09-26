@@ -1,0 +1,67 @@
+@import url('https://fonts.googleapis.com/css?family=Source+Code+Pro');
+@import url('https://fonts.googleapis.com/css?family=Press+Start+2P');
+@import url('https://fonts.googleapis.com/css?family=Notable');
+
+
+.link {
+	display: block;
+	padding: 60px 0;
+	width: auto;
+	white-space: nowrap;
+	cursor: pointer;
+	font-size: 32;
+	text-align: center;
+	transition: .25s;
+}
+
+.link:hover {
+	/* padding: 50px 0; */
+	/* box-shadow: inset 0 0 0 7px rgb(103,58,183, 0.8); */
+	width: auto;
+	white-space: nowrap;
+	cursor: pointer;
+	margin: 0;
+	/* transform: scale(1.2); */
+}
+
+.link {
+    text-decoration: none;
+}
+
+.link:visited {
+    text-decoration: none;
+}
+
+
+.fefu_invaders {	
+	font-family: 'Press Start 2P';
+	/* font-family: 'Notable', sans-serif; */
+	color: rgb(250, 250, 250);
+	background: black;
+	box-shadow: inset 0 0 0 7px rgb(255, 255, 255);
+	
+}
+
+.fefu_invaders:hover{
+	color: rgb(255, 255, 255);
+}
+
+.webgl {
+	font-family: 'Notable', sans-serif;
+	color: #971319;
+	background: rgb(255, 255, 255);
+	font-variant: small-caps;
+	box-shadow: inset 0 0 0 7px rgb(151, 19, 25);
+}
+
+.webgl:hover {
+}
+
+body {
+	/* padding: 20px 0 0 0; */
+	padding: 0;
+	margin: 0;
+	overflow:hidden;
+	background: rgb(252, 252, 252); /* Old browsers */
+
+}
