@@ -1,16 +1,25 @@
 const app = new PIXI.Application(800, 600, { backgroundColor: 0xDCEDC8, antialias: true })
 app.view.style.visibility = "hidden"
-document.body.appendChild(app.view)
 
+document.body.appendChild(app.view)
 window.onresize = function () {
 	app.view.style.position = 'absolute'
 	app.view.style.left = (this.innerWidth - app.screen.width) / 2 + 'px'
 	app.view.style.top = (this.innerHeight - app.screen.height) / 2 + 'px'
 }
 
+document.addEventListener("DOMContentLoaded", function (event) {
+	app.view.oncontextmenu = event => {
+		event.preventDefault();
+	}	
+})
+
 window.onload = function() {
 	window.onresize()
 	app.view.style.visibility = "visible"
+
+	// on document ready
+	// app.view.oncontextmenu = event => event.preventDefault()
 }
 
 // Log
@@ -24,6 +33,9 @@ let Log = {
 	},
 	warn: function (msg) {
 		console.log(`[INFO] ${msg}`)
+	},
+	debug: function (msg) {
+		console.log(`[DEBUG] ${msg}`)
 	},
 }
 
